@@ -6,16 +6,14 @@ info:
 paths:
   /did:
     post:
-      produces:
-        - text/plain
-      parameters:
-        - in: body
-          name: body
-          description: Create object that needs to be added to the store
-          required: true
-          schema:
-            $ref: '#/definitions/Create'
+      tags: ["create"]
       operationId: create
+      summary: Create a new customer to track
+      parameters:
+        - name: info
+          in: body
+          schema:
+            $ref: "#/definitions/Create"
       responses:
         200:
           description: returns a hash
