@@ -19,7 +19,8 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/lzxm160/testswagger/restapi/operations/create"
+	"github.com/lzxm160/testswagger/restapi/operations/get"
+	"github.com/lzxm160/testswagger/restapi/operations/update"
 )
 
 // NewDidAPI creates a new Did instance
@@ -43,8 +44,11 @@ func NewDidAPI(spec *loads.Document) *DidAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
-		CreateCreateHandler: create.CreateHandlerFunc(func(params create.CreateParams) middleware.Responder {
-			return middleware.NotImplemented("operation create.Create has not yet been implemented")
+		GetGetHandler: get.GetHandlerFunc(func(params get.GetParams) middleware.Responder {
+			return middleware.NotImplemented("operation get.Get has not yet been implemented")
+		}),
+		UpdateUpdateHandler: update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
+			return middleware.NotImplemented("operation update.Update has not yet been implemented")
 		}),
 	}
 }
@@ -79,8 +83,10 @@ type DidAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
-	// CreateCreateHandler sets the operation handler for the create operation
-	CreateCreateHandler create.CreateHandler
+	// GetGetHandler sets the operation handler for the get operation
+	GetGetHandler get.GetHandler
+	// UpdateUpdateHandler sets the operation handler for the update operation
+	UpdateUpdateHandler update.UpdateHandler
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
@@ -147,8 +153,11 @@ func (o *DidAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.CreateCreateHandler == nil {
-		unregistered = append(unregistered, "create.CreateHandler")
+	if o.GetGetHandler == nil {
+		unregistered = append(unregistered, "get.GetHandler")
+	}
+	if o.UpdateUpdateHandler == nil {
+		unregistered = append(unregistered, "update.UpdateHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -238,10 +247,14 @@ func (o *DidAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/did"] = get.NewGet(o.context, o.GetGetHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/did"] = create.NewCreate(o.context, o.CreateCreateHandler)
+	o.handlers["POST"]["/did"] = update.NewUpdate(o.context, o.UpdateUpdateHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

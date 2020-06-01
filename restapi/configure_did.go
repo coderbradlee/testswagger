@@ -11,7 +11,8 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 
 	"github.com/lzxm160/testswagger/restapi/operations"
-	"github.com/lzxm160/testswagger/restapi/operations/create"
+	"github.com/lzxm160/testswagger/restapi/operations/get"
+	"github.com/lzxm160/testswagger/restapi/operations/update"
 )
 
 //go:generate swagger generate server --target ../../testswagger --name Did --spec ../swagger.yml
@@ -34,9 +35,14 @@ func configureAPI(api *operations.DidAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	if api.CreateCreateHandler == nil {
-		api.CreateCreateHandler = create.CreateHandlerFunc(func(params create.CreateParams) middleware.Responder {
-			return middleware.NotImplemented("operation create.Create has not yet been implemented")
+	if api.GetGetHandler == nil {
+		api.GetGetHandler = get.GetHandlerFunc(func(params get.GetParams) middleware.Responder {
+			return middleware.NotImplemented("operation get.Get has not yet been implemented")
+		})
+	}
+	if api.UpdateUpdateHandler == nil {
+		api.UpdateUpdateHandler = update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
+			return middleware.NotImplemented("operation update.Update has not yet been implemented")
 		})
 	}
 

@@ -25,18 +25,43 @@ func init() {
   },
   "paths": {
     "/did": {
-      "post": {
+      "get": {
         "tags": [
-          "create"
+          "get"
         ],
-        "summary": "Create a new customer to track",
-        "operationId": "create",
+        "summary": "include getHash getURI",
+        "operationId": "get",
         "parameters": [
           {
             "name": "info",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/Create"
+              "$ref": "#/definitions/jsonrpc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns jsonrpc",
+            "schema": {
+              "description": "standard jsonrpc",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "update"
+        ],
+        "summary": "include createDID deleteDID updateHash updateURI",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "info",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/jsonrpc"
             }
           }
         ],
@@ -53,24 +78,13 @@ func init() {
     }
   },
   "definitions": {
-    "Create": {
+    "jsonrpc": {
       "type": "object",
       "required": [
-        "id",
-        "hash",
-        "uri"
+        "jsonbody"
       ],
       "properties": {
-        "hash": {
-          "type": "string",
-          "format": "string",
-          "minLength": 64
-        },
-        "id": {
-          "type": "string",
-          "format": "string"
-        },
-        "uri": {
+        "jsonbody": {
           "type": "string",
           "format": "string"
         }
@@ -86,18 +100,43 @@ func init() {
   },
   "paths": {
     "/did": {
-      "post": {
+      "get": {
         "tags": [
-          "create"
+          "get"
         ],
-        "summary": "Create a new customer to track",
-        "operationId": "create",
+        "summary": "include getHash getURI",
+        "operationId": "get",
         "parameters": [
           {
             "name": "info",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/Create"
+              "$ref": "#/definitions/jsonrpc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns jsonrpc",
+            "schema": {
+              "description": "standard jsonrpc",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "update"
+        ],
+        "summary": "include createDID deleteDID updateHash updateURI",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "info",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/jsonrpc"
             }
           }
         ],
@@ -114,24 +153,13 @@ func init() {
     }
   },
   "definitions": {
-    "Create": {
+    "jsonrpc": {
       "type": "object",
       "required": [
-        "id",
-        "hash",
-        "uri"
+        "jsonbody"
       ],
       "properties": {
-        "hash": {
-          "type": "string",
-          "format": "string",
-          "minLength": 64
-        },
-        "id": {
-          "type": "string",
-          "format": "string"
-        },
-        "uri": {
+        "jsonbody": {
           "type": "string",
           "format": "string"
         }
