@@ -4,7 +4,10 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
+
+	"github.com/lzxm160/testswagger/handler"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -35,16 +38,18 @@ func configureAPI(api *operations.DidAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	if api.GetGetHandler == nil {
-		api.GetGetHandler = get.GetHandlerFunc(func(params get.GetParams) middleware.Responder {
-			return middleware.NotImplemented("operation get.Get has not yet been implemented")
-		})
-	}
-	if api.UpdateUpdateHandler == nil {
-		api.UpdateUpdateHandler = update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
-			return middleware.NotImplemented("operation update.Update has not yet been implemented")
-		})
-	}
+	//if api.GetGetHandler == nil {
+	api.GetGetHandler = get.GetHandlerFunc(func(params get.GetParams) middleware.Responder {
+		return middleware.NotImplemented("operation get.Get has not yet been implemented")
+	})
+	//}
+	fmt.Println("before nil", api.UpdateUpdateHandler)
+	//if api.UpdateUpdateHandler == nil {
+	api.UpdateUpdateHandler = update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
+		ret := handler.UpdateHandler(params)
+		return handler.UpdateResponse{ret}
+	})
+	//}
 
 	api.PreServerShutdown = func() {}
 
