@@ -33,9 +33,9 @@ func configureAPI(api *operations.DidAPI) http.Handler {
 
 	api.TxtProducer = runtime.TextProducer()
 
-	if api.GetDidHandler == nil {
-		api.GetDidHandler = operations.GetDidHandlerFunc(func(params operations.GetDidParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.GetDid has not yet been implemented")
+	if api.CreateHandler == nil {
+		api.CreateHandler = operations.CreateHandlerFunc(func(params operations.CreateParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.Create has not yet been implemented")
 		})
 	}
 

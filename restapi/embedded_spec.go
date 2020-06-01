@@ -25,27 +25,65 @@ func init() {
   },
   "paths": {
     "/did": {
-      "get": {
+      "post": {
         "produces": [
           "text/plain"
         ],
-        "operationId": "getDid",
+        "operationId": "create",
         "parameters": [
           {
             "type": "string",
-            "description": "defaults to empty if not given",
-            "name": "name",
-            "in": "query"
+            "name": "id",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "hash",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "uri",
+            "in": "query",
+            "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "returns a did",
+            "description": "returns a hash",
             "schema": {
-              "description": "contains the actual greeting as plain text",
+              "description": "did create hash",
               "type": "string"
             }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "error": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "fields": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
         }
       }
     }
@@ -59,27 +97,65 @@ func init() {
   },
   "paths": {
     "/did": {
-      "get": {
+      "post": {
         "produces": [
           "text/plain"
         ],
-        "operationId": "getDid",
+        "operationId": "create",
         "parameters": [
           {
             "type": "string",
-            "description": "defaults to empty if not given",
-            "name": "name",
-            "in": "query"
+            "name": "id",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "hash",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "uri",
+            "in": "query",
+            "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "returns a did",
+            "description": "returns a hash",
             "schema": {
-              "description": "contains the actual greeting as plain text",
+              "description": "did create hash",
               "type": "string"
             }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "error": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "fields": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
         }
       }
     }

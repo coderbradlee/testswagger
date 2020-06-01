@@ -11,9 +11,11 @@ import (
 	golangswaggerpaths "path"
 )
 
-// GetDidURL generates an URL for the get did operation
-type GetDidURL struct {
-	Name *string
+// CreateURL generates an URL for the create operation
+type CreateURL struct {
+	Hash string
+	ID   string
+	URI  string
 
 	_basePath string
 	// avoid unkeyed usage
@@ -23,7 +25,7 @@ type GetDidURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetDidURL) WithBasePath(bp string) *GetDidURL {
+func (o *CreateURL) WithBasePath(bp string) *CreateURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -31,12 +33,12 @@ func (o *GetDidURL) WithBasePath(bp string) *GetDidURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetDidURL) SetBasePath(bp string) {
+func (o *CreateURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *GetDidURL) Build() (*url.URL, error) {
+func (o *CreateURL) Build() (*url.URL, error) {
 	var _result url.URL
 
 	var _path = "/did"
@@ -46,12 +48,19 @@ func (o *GetDidURL) Build() (*url.URL, error) {
 
 	qs := make(url.Values)
 
-	var nameQ string
-	if o.Name != nil {
-		nameQ = *o.Name
+	hashQ := o.Hash
+	if hashQ != "" {
+		qs.Set("hash", hashQ)
 	}
-	if nameQ != "" {
-		qs.Set("name", nameQ)
+
+	idQ := o.ID
+	if idQ != "" {
+		qs.Set("id", idQ)
+	}
+
+	uriQ := o.URI
+	if uriQ != "" {
+		qs.Set("uri", uriQ)
 	}
 
 	_result.RawQuery = qs.Encode()
@@ -60,7 +69,7 @@ func (o *GetDidURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *GetDidURL) Must(u *url.URL, err error) *url.URL {
+func (o *CreateURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -71,17 +80,17 @@ func (o *GetDidURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *GetDidURL) String() string {
+func (o *CreateURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *GetDidURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *CreateURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on GetDidURL")
+		return nil, errors.New("scheme is required for a full url on CreateURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on GetDidURL")
+		return nil, errors.New("host is required for a full url on CreateURL")
 	}
 
 	base, err := o.Build()
@@ -95,6 +104,6 @@ func (o *GetDidURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *GetDidURL) StringFull(scheme, host string) string {
+func (o *CreateURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

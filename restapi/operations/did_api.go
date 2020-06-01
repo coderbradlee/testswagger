@@ -41,8 +41,8 @@ func NewDidAPI(spec *loads.Document) *DidAPI {
 
 		TxtProducer: runtime.TextProducer(),
 
-		GetDidHandler: GetDidHandlerFunc(func(params GetDidParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetDid has not yet been implemented")
+		CreateHandler: CreateHandlerFunc(func(params CreateParams) middleware.Responder {
+			return middleware.NotImplemented("operation Create has not yet been implemented")
 		}),
 	}
 }
@@ -77,8 +77,8 @@ type DidAPI struct {
 	//   - text/plain
 	TxtProducer runtime.Producer
 
-	// GetDidHandler sets the operation handler for the get did operation
-	GetDidHandler GetDidHandler
+	// CreateHandler sets the operation handler for the create operation
+	CreateHandler CreateHandler
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
@@ -145,8 +145,8 @@ func (o *DidAPI) Validate() error {
 		unregistered = append(unregistered, "TxtProducer")
 	}
 
-	if o.GetDidHandler == nil {
-		unregistered = append(unregistered, "GetDidHandler")
+	if o.CreateHandler == nil {
+		unregistered = append(unregistered, "CreateHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -236,10 +236,10 @@ func (o *DidAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/did"] = NewGetDid(o.context, o.GetDidHandler)
+	o.handlers["POST"]["/did"] = NewCreate(o.context, o.CreateHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
