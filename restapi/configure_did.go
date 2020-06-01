@@ -4,6 +4,7 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
 
 	"github.com/lzxm160/testswagger/handler"
@@ -42,6 +43,7 @@ func configureAPI(api *operations.DidAPI) http.Handler {
 			return middleware.NotImplemented("operation get.Get has not yet been implemented")
 		})
 	}
+	fmt.Println("before nil")
 	if api.UpdateUpdateHandler == nil {
 		api.UpdateUpdateHandler = update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
 			ret := handler.UpdateHandler(params)
