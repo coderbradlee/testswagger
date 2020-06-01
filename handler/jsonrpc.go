@@ -137,27 +137,21 @@ func MarshalResponse(id interface{}, result interface{}, rpcErr *RPCError) ([]by
 }
 
 func UpdateHandler(params update.UpdateParams) *models.Jsonrpc {
-	fmt.Println("UpdateHandler:", *params.Body.Jsonrpc)
-	var req Request
-	err := json.Unmarshal([]byte(*params.Body.Jsonrpc), &req)
+	fmt.Println("UpdateHandler:", *params.Body)
 	var ret []byte
-	if err != nil {
-		ret, _ = MarshalResponse(nil, nil, &RPCError{ErrUnmarshal, "request unmarshal error"})
-
-	}
-	switch req.Method {
+	switch *params.Body.Method {
 	case "createDID":
 		result := "createDID"
-		ret, _ = MarshalResponse(req.ID, &result, nil)
+		ret, _ = MarshalResponse(*params.Body.ID, &result, nil)
 	case "deleteDID":
 		result := "deleteDID"
-		ret, _ = MarshalResponse(req.ID, &result, nil)
+		ret, _ = MarshalResponse(*params.Body.ID, &result, nil)
 	case "updateHash":
 		result := "updateHash"
-		ret, _ = MarshalResponse(req.ID, &result, nil)
+		ret, _ = MarshalResponse(*params.Body.ID, &result, nil)
 	case "updateURI":
 		result := "updateURI"
-		ret, _ = MarshalResponse(req.ID, &result, nil)
+		ret, _ = MarshalResponse(*params.Body.ID, &result, nil)
 	default:
 		ret, _ = MarshalResponse(nil, nil, &RPCError{ErrInvalidMethod, "request invalid method"})
 	}
