@@ -43,7 +43,7 @@ func configureAPI(api *operations.DidAPI) http.Handler {
 			return middleware.NotImplemented("operation get.Get has not yet been implemented")
 		})
 	}
-	fmt.Println("before nil")
+	fmt.Println("before nil", api.UpdateUpdateHandler)
 	if api.UpdateUpdateHandler == nil {
 		fmt.Println("api.UpdateUpdateHandler == nil")
 		api.UpdateUpdateHandler = update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
