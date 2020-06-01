@@ -137,9 +137,9 @@ func MarshalResponse(id interface{}, result interface{}, rpcErr *RPCError) ([]by
 }
 
 func UpdateHandler(params update.UpdateParams) *models.Jsonrpc {
-	fmt.Println("UpdateHandler:", params.Body.Jsonbody)
+	fmt.Println("UpdateHandler:", params.Body.Jsonrpc)
 	var req Request
-	err := json.Unmarshal([]byte(*params.Body.Jsonbody), &req)
+	err := json.Unmarshal([]byte(*params.Body.Jsonrpc), &req)
 	var ret []byte
 	if err != nil {
 		ret, _ = MarshalResponse(nil, nil, &RPCError{ErrUnmarshal, "request unmarshal error"})
