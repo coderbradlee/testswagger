@@ -9,8 +9,6 @@ import (
 	"fmt"
 
 	"github.com/lzxm160/testswagger/restapi/operations/update"
-
-	"github.com/lzxm160/testswagger/models"
 )
 
 type RPCErrorCode int
@@ -136,7 +134,7 @@ func MarshalResponse(id interface{}, result interface{}, rpcErr *RPCError) ([]by
 	return json.Marshal(&response)
 }
 
-func UpdateHandler(params update.UpdateParams) *models.Jsonrpc {
+func UpdateHandler(params update.UpdateParams) []byte {
 	fmt.Println("UpdateHandler:", *params.Body)
 	var ret []byte
 	switch *params.Body.Method {
@@ -155,6 +153,5 @@ func UpdateHandler(params update.UpdateParams) *models.Jsonrpc {
 	default:
 		ret, _ = MarshalResponse(nil, nil, &RPCError{ErrInvalidMethod, "request invalid method"})
 	}
-	res := string(ret)
-	return &models.Jsonrpc{&res}
+	return ret
 }

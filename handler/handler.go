@@ -4,14 +4,12 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime"
-
-	"github.com/lzxm160/testswagger/models"
 )
 
 type UpdateResponse struct {
 
 	// In: body
-	Payload *models.Jsonrpc `json:"body,omitempty"`
+	Payload []byte `json:"response,omitempty"`
 }
 
 // Handler to the client
