@@ -5,19 +5,44 @@ info:
   title: Did
 paths:
   /did:
-    get:
+    post:
       produces:
         - text/plain
       parameters:
-        - name: name
-          required: false
+        - name: id
+          required: true
           type: string
           in: query
-          description: defaults to empty if not given
-      operationId: getDid
+        - name: hash
+          required: true
+          type: string
+          in: query
+        - name: uri
+          required: true
+          type: string
+          in: query
+      operationId: create
       responses:
         200:
-          description: returns a did
+          description: returns a hash
           schema:
               type: string
-              description: contains the actual greeting as plain text
+              description: did create hash
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+
+definitions:
+  error:
+    type: object
+    required:
+      - message
+    properties:
+      code:
+        type: integer
+        format: int64
+      message:
+        type: string
+      fields:
+        type: string
