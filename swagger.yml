@@ -42,11 +42,24 @@ paths:
             type: string
             description: standard jsonrpc
 definitions:
-  jsonrpc:
+  json:
     type: object
     required:
-      - jsonbody
+      - jsonrpc
+      - id
+      - method
     properties:
-      jsonbody:
+      jsonrpc:
         type: string
         format: string
+      id:
+        type: string
+        format: string
+      method:
+        type: string
+        format: string
+      params:
+        type: array
+        items:
+          type: string
+          format: string
