@@ -13,13 +13,13 @@ import (
 	"github.com/lzxm160/testswagger/testswagger/restapi/operations"
 )
 
-//go:generate swagger generate server --target ../../testswagger --name GreetingServer --spec ../swagger.yml
+//go:generate swagger generate server --target ../../testswagger --name DidRestfulServer --spec ../swagger.yml
 
-func configureFlags(api *operations.GreetingServerAPI) {
+func configureFlags(api *operations.DidRestfulServerAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *operations.GreetingServerAPI) http.Handler {
+func configureAPI(api *operations.DidRestfulServerAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
 
@@ -33,9 +33,9 @@ func configureAPI(api *operations.GreetingServerAPI) http.Handler {
 
 	api.TxtProducer = runtime.TextProducer()
 
-	if api.GetGreetingHandler == nil {
-		api.GetGreetingHandler = operations.GetGreetingHandlerFunc(func(params operations.GetGreetingParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.GetGreeting has not yet been implemented")
+	if api.GetDidHandler == nil {
+		api.GetDidHandler = operations.GetDidHandlerFunc(func(params operations.GetDidParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetDid has not yet been implemented")
 		})
 	}
 

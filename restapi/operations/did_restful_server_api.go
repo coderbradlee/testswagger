@@ -20,9 +20,9 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewGreetingServerAPI creates a new GreetingServer instance
-func NewGreetingServerAPI(spec *loads.Document) *GreetingServerAPI {
-	return &GreetingServerAPI{
+// NewDidRestfulServerAPI creates a new DidRestfulServer instance
+func NewDidRestfulServerAPI(spec *loads.Document) *DidRestfulServerAPI {
+	return &DidRestfulServerAPI{
 		handlers:            make(map[string]map[string]http.Handler),
 		formats:             strfmt.Default,
 		defaultConsumes:     "application/json",
@@ -41,14 +41,14 @@ func NewGreetingServerAPI(spec *loads.Document) *GreetingServerAPI {
 
 		TxtProducer: runtime.TextProducer(),
 
-		GetGreetingHandler: GetGreetingHandlerFunc(func(params GetGreetingParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetGreeting has not yet been implemented")
+		GetDidHandler: GetDidHandlerFunc(func(params GetDidParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetDid has not yet been implemented")
 		}),
 	}
 }
 
-/*GreetingServerAPI the greeting server API */
-type GreetingServerAPI struct {
+/*DidRestfulServerAPI the did restful server API */
+type DidRestfulServerAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
 	handlers        map[string]map[string]http.Handler
@@ -77,8 +77,8 @@ type GreetingServerAPI struct {
 	//   - text/plain
 	TxtProducer runtime.Producer
 
-	// GetGreetingHandler sets the operation handler for the get greeting operation
-	GetGreetingHandler GetGreetingHandler
+	// GetDidHandler sets the operation handler for the get did operation
+	GetDidHandler GetDidHandler
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
@@ -99,42 +99,42 @@ type GreetingServerAPI struct {
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *GreetingServerAPI) SetDefaultProduces(mediaType string) {
+func (o *DidRestfulServerAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *GreetingServerAPI) SetDefaultConsumes(mediaType string) {
+func (o *DidRestfulServerAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
-func (o *GreetingServerAPI) SetSpec(spec *loads.Document) {
+func (o *DidRestfulServerAPI) SetSpec(spec *loads.Document) {
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
-func (o *GreetingServerAPI) DefaultProduces() string {
+func (o *DidRestfulServerAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *GreetingServerAPI) DefaultConsumes() string {
+func (o *DidRestfulServerAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *GreetingServerAPI) Formats() strfmt.Registry {
+func (o *DidRestfulServerAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *GreetingServerAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *DidRestfulServerAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the GreetingServerAPI
-func (o *GreetingServerAPI) Validate() error {
+// Validate validates the registrations in the DidRestfulServerAPI
+func (o *DidRestfulServerAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -145,8 +145,8 @@ func (o *GreetingServerAPI) Validate() error {
 		unregistered = append(unregistered, "TxtProducer")
 	}
 
-	if o.GetGreetingHandler == nil {
-		unregistered = append(unregistered, "GetGreetingHandler")
+	if o.GetDidHandler == nil {
+		unregistered = append(unregistered, "GetDidHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -157,23 +157,23 @@ func (o *GreetingServerAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *GreetingServerAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *DidRestfulServerAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *GreetingServerAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+func (o *DidRestfulServerAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 	return nil
 }
 
 // Authorizer returns the registered authorizer
-func (o *GreetingServerAPI) Authorizer() runtime.Authorizer {
+func (o *DidRestfulServerAPI) Authorizer() runtime.Authorizer {
 	return nil
 }
 
 // ConsumersFor gets the consumers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *GreetingServerAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+func (o *DidRestfulServerAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -190,7 +190,7 @@ func (o *GreetingServerAPI) ConsumersFor(mediaTypes []string) map[string]runtime
 
 // ProducersFor gets the producers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *GreetingServerAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+func (o *DidRestfulServerAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -206,7 +206,7 @@ func (o *GreetingServerAPI) ProducersFor(mediaTypes []string) map[string]runtime
 }
 
 // HandlerFor gets a http.Handler for the provided operation method and path
-func (o *GreetingServerAPI) HandlerFor(method, path string) (http.Handler, bool) {
+func (o *DidRestfulServerAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -221,8 +221,8 @@ func (o *GreetingServerAPI) HandlerFor(method, path string) (http.Handler, bool)
 	return h, ok
 }
 
-// Context returns the middleware context for the greeting server API
-func (o *GreetingServerAPI) Context() *middleware.Context {
+// Context returns the middleware context for the did restful server API
+func (o *DidRestfulServerAPI) Context() *middleware.Context {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -230,7 +230,7 @@ func (o *GreetingServerAPI) Context() *middleware.Context {
 	return o.context
 }
 
-func (o *GreetingServerAPI) initHandlerCache() {
+func (o *DidRestfulServerAPI) initHandlerCache() {
 	o.Context() // don't care about the result, just that the initialization happened
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
@@ -239,12 +239,12 @@ func (o *GreetingServerAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/hello"] = NewGetGreeting(o.context, o.GetGreetingHandler)
+	o.handlers["GET"]["/did"] = NewGetDid(o.context, o.GetDidHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *GreetingServerAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *DidRestfulServerAPI) Serve(builder middleware.Builder) http.Handler {
 	o.Init()
 
 	if o.Middleware != nil {
@@ -254,24 +254,24 @@ func (o *GreetingServerAPI) Serve(builder middleware.Builder) http.Handler {
 }
 
 // Init allows you to just initialize the handler cache, you can then recompose the middleware as you see fit
-func (o *GreetingServerAPI) Init() {
+func (o *DidRestfulServerAPI) Init() {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}
 }
 
 // RegisterConsumer allows you to add (or override) a consumer for a media type.
-func (o *GreetingServerAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
+func (o *DidRestfulServerAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
 	o.customConsumers[mediaType] = consumer
 }
 
 // RegisterProducer allows you to add (or override) a producer for a media type.
-func (o *GreetingServerAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
+func (o *DidRestfulServerAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
 	o.customProducers[mediaType] = producer
 }
 
 // AddMiddlewareFor adds a http middleware to existing handler
-func (o *GreetingServerAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
+func (o *DidRestfulServerAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
 	um := strings.ToUpper(method)
 	if path == "/" {
 		path = ""

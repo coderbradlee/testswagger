@@ -20,27 +20,27 @@ func init() {
 	SwaggerJSON = json.RawMessage([]byte(`{
   "swagger": "2.0",
   "info": {
-    "title": "Greeting Server",
+    "title": "Did restful Server",
     "version": "1.0.0"
   },
   "paths": {
-    "/hello": {
+    "/did": {
       "get": {
         "produces": [
           "text/plain"
         ],
-        "operationId": "getGreeting",
+        "operationId": "getDid",
         "parameters": [
           {
             "type": "string",
-            "description": "defaults to World if not given",
+            "description": "defaults to empty if not given",
             "name": "name",
             "in": "query"
           }
         ],
         "responses": {
           "200": {
-            "description": "returns a greeting",
+            "description": "returns a did",
             "schema": {
               "description": "contains the actual greeting as plain text",
               "type": "string"
@@ -54,27 +54,27 @@ func init() {
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
   "swagger": "2.0",
   "info": {
-    "title": "Greeting Server",
+    "title": "Did restful Server",
     "version": "1.0.0"
   },
   "paths": {
-    "/hello": {
+    "/did": {
       "get": {
         "produces": [
           "text/plain"
         ],
-        "operationId": "getGreeting",
+        "operationId": "getDid",
         "parameters": [
           {
             "type": "string",
-            "description": "defaults to World if not given",
+            "description": "defaults to empty if not given",
             "name": "name",
             "in": "query"
           }
         ],
         "responses": {
           "200": {
-            "description": "returns a greeting",
+            "description": "returns a did",
             "schema": {
               "description": "contains the actual greeting as plain text",
               "type": "string"

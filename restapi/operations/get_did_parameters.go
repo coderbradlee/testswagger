@@ -14,23 +14,23 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetGreetingParams creates a new GetGreetingParams object
+// NewGetDidParams creates a new GetDidParams object
 // no default values defined in spec.
-func NewGetGreetingParams() GetGreetingParams {
+func NewGetDidParams() GetDidParams {
 
-	return GetGreetingParams{}
+	return GetDidParams{}
 }
 
-// GetGreetingParams contains all the bound params for the get greeting operation
+// GetDidParams contains all the bound params for the get did operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters getGreeting
-type GetGreetingParams struct {
+// swagger:parameters getDid
+type GetDidParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*defaults to World if not given
+	/*defaults to empty if not given
 	  In: query
 	*/
 	Name *string
@@ -39,8 +39,8 @@ type GetGreetingParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewGetGreetingParams() beforehand.
-func (o *GetGreetingParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewGetDidParams() beforehand.
+func (o *GetDidParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
@@ -59,7 +59,7 @@ func (o *GetGreetingParams) BindRequest(r *http.Request, route *middleware.Match
 }
 
 // bindName binds and validates parameter Name from query.
-func (o *GetGreetingParams) bindName(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *GetDidParams) bindName(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]

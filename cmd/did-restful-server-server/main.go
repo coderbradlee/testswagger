@@ -22,12 +22,12 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	api := operations.NewGreetingServerAPI(swaggerSpec)
+	api := operations.NewDidRestfulServerAPI(swaggerSpec)
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 
 	parser := flags.NewParser(server, flags.Default)
-	parser.ShortDescription = "Greeting Server"
+	parser.ShortDescription = "Did restful Server"
 	parser.LongDescription = swaggerSpec.Spec().Info.Description
 	server.ConfigureFlags()
 	for _, optsGroup := range api.CommandLineOptionsGroups {
