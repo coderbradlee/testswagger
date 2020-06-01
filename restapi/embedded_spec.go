@@ -26,28 +26,18 @@ func init() {
   "paths": {
     "/did": {
       "post": {
-        "produces": [
-          "text/plain"
+        "tags": [
+          "create"
         ],
+        "summary": "Create a new customer to track",
         "operationId": "create",
         "parameters": [
           {
-            "type": "string",
-            "name": "id",
-            "in": "query",
-            "required": true
-          },
-          {
-            "type": "string",
-            "name": "hash",
-            "in": "query",
-            "required": true
-          },
-          {
-            "type": "string",
-            "name": "uri",
-            "in": "query",
-            "required": true
+            "name": "info",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Create"
+            }
           }
         ],
         "responses": {
@@ -69,6 +59,29 @@ func init() {
     }
   },
   "definitions": {
+    "Create": {
+      "type": "object",
+      "required": [
+        "id",
+        "hash",
+        "uri"
+      ],
+      "properties": {
+        "hash": {
+          "type": "string",
+          "format": "string",
+          "minLength": 64
+        },
+        "id": {
+          "type": "string",
+          "format": "string"
+        },
+        "uri": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
     "error": {
       "type": "object",
       "required": [
@@ -86,6 +99,9 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "principal": {
+      "type": "string"
     }
   }
 }`))
@@ -98,28 +114,18 @@ func init() {
   "paths": {
     "/did": {
       "post": {
-        "produces": [
-          "text/plain"
+        "tags": [
+          "create"
         ],
+        "summary": "Create a new customer to track",
         "operationId": "create",
         "parameters": [
           {
-            "type": "string",
-            "name": "id",
-            "in": "query",
-            "required": true
-          },
-          {
-            "type": "string",
-            "name": "hash",
-            "in": "query",
-            "required": true
-          },
-          {
-            "type": "string",
-            "name": "uri",
-            "in": "query",
-            "required": true
+            "name": "info",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Create"
+            }
           }
         ],
         "responses": {
@@ -141,6 +147,29 @@ func init() {
     }
   },
   "definitions": {
+    "Create": {
+      "type": "object",
+      "required": [
+        "id",
+        "hash",
+        "uri"
+      ],
+      "properties": {
+        "hash": {
+          "type": "string",
+          "format": "string",
+          "minLength": 64
+        },
+        "id": {
+          "type": "string",
+          "format": "string"
+        },
+        "uri": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
     "error": {
       "type": "object",
       "required": [
@@ -158,6 +187,9 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "principal": {
+      "type": "string"
     }
   }
 }`))

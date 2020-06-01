@@ -12,7 +12,7 @@
 //    - application/json
 //
 //  Produces:
-//    - text/plain
+//    - application/json
 //
 // swagger:meta
 package restapi

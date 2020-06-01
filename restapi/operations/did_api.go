@@ -18,6 +18,8 @@ import (
 	"github.com/go-openapi/spec"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+
+	"github.com/lzxm160/testswagger/restapi/operations/create"
 )
 
 // NewDidAPI creates a new Did instance
@@ -39,10 +41,10 @@ func NewDidAPI(spec *loads.Document) *DidAPI {
 
 		JSONConsumer: runtime.JSONConsumer(),
 
-		TxtProducer: runtime.TextProducer(),
+		JSONProducer: runtime.JSONProducer(),
 
-		CreateHandler: CreateHandlerFunc(func(params CreateParams) middleware.Responder {
-			return middleware.NotImplemented("operation Create has not yet been implemented")
+		CreateCreateHandler: create.CreateHandlerFunc(func(params create.CreateParams) middleware.Responder {
+			return middleware.NotImplemented("operation create.Create has not yet been implemented")
 		}),
 	}
 }
@@ -73,12 +75,12 @@ type DidAPI struct {
 	//   - application/json
 	JSONConsumer runtime.Consumer
 
-	// TxtProducer registers a producer for the following mime types:
-	//   - text/plain
-	TxtProducer runtime.Producer
+	// JSONProducer registers a producer for the following mime types:
+	//   - application/json
+	JSONProducer runtime.Producer
 
-	// CreateHandler sets the operation handler for the create operation
-	CreateHandler CreateHandler
+	// CreateCreateHandler sets the operation handler for the create operation
+	CreateCreateHandler create.CreateHandler
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
@@ -141,12 +143,12 @@ func (o *DidAPI) Validate() error {
 		unregistered = append(unregistered, "JSONConsumer")
 	}
 
-	if o.TxtProducer == nil {
-		unregistered = append(unregistered, "TxtProducer")
+	if o.JSONProducer == nil {
+		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.CreateHandler == nil {
-		unregistered = append(unregistered, "CreateHandler")
+	if o.CreateCreateHandler == nil {
+		unregistered = append(unregistered, "create.CreateHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -194,8 +196,8 @@ func (o *DidAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
-		case "text/plain":
-			result["text/plain"] = o.TxtProducer
+		case "application/json":
+			result["application/json"] = o.JSONProducer
 		}
 
 		if p, ok := o.customProducers[mt]; ok {
@@ -239,7 +241,7 @@ func (o *DidAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/did"] = NewCreate(o.context, o.CreateHandler)
+	o.handlers["POST"]["/did"] = create.NewCreate(o.context, o.CreateCreateHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
