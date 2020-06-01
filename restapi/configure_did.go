@@ -44,13 +44,12 @@ func configureAPI(api *operations.DidAPI) http.Handler {
 		})
 	}
 	fmt.Println("before nil", api.UpdateUpdateHandler)
-	if api.UpdateUpdateHandler == nil {
-		fmt.Println("api.UpdateUpdateHandler == nil")
-		api.UpdateUpdateHandler = update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
-			ret := handler.UpdateHandler(params)
-			return handler.UpdateResponse{ret}
-		})
-	}
+	//if api.UpdateUpdateHandler == nil {
+	api.UpdateUpdateHandler = update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
+		ret := handler.UpdateHandler(params)
+		return handler.UpdateResponse{ret}
+	})
+	//}
 
 	api.PreServerShutdown = func() {}
 
