@@ -52,3 +52,5 @@ definitions:
         type: string
       fields:
         type: string
+  principal:
+    type: string
