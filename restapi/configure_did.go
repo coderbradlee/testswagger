@@ -6,6 +6,8 @@ import (
 	"crypto/tls"
 	"net/http"
 
+	"github.com/lzxm160/testswagger/handler"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
@@ -42,7 +44,8 @@ func configureAPI(api *operations.DidAPI) http.Handler {
 	}
 	if api.UpdateUpdateHandler == nil {
 		api.UpdateUpdateHandler = update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
-			return middleware.NotImplemented("operation update.Update has not yet been implemented")
+			ret := handler.UpdateHandler(params.Info)
+			return handler.UpdateResponse{ret}
 		})
 	}
 

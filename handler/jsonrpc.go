@@ -7,6 +7,8 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/lzxm160/testswagger/models"
 )
 
 // RPCErrorCode represents an error code to be used as a part of an RPCError
@@ -115,36 +117,34 @@ type Response struct {
 	ID     *interface{}    `json:"id"`
 }
 
-// NewResponse returns a new JSON-RPC response object given the provided id,
-// marshalled result, and RPC error.  This function is only provided in case the
-// caller wants to construct raw responses for some reason.
-//
-// Typically callers will instead want to create the fully marshalled JSON-RPC
-// response to send over the wire with the MarshalResponse function.
-//func NewResponse(id interface{}, marshalledResult []byte, rpcErr *RPCError) (*Response, error) {
-//	if !IsValidIDType(id) {
-//		str := fmt.Sprintf("the id of type '%T' is invalid", id)
-//		return nil, makeError(ErrInvalidType, str)
-//	}
-//
-//	pid := &id
-//	return &Response{
-//		Result: marshalledResult,
-//		Error:  rpcErr,
-//		ID:     pid,
-//	}, nil
-//}
+func NewResponse(id interface{}, marshalledResult []byte, rpcErr *RPCError) (*Response, error) {
+	if !IsValidIDType(id) {
+		str := fmt.Sprintf("the id of type '%T' is invalid", id)
+		return nil, makeError(ErrInvalidType, str)
+	}
 
-// MarshalResponse marshals the passed id, result, and RPCError to a JSON-RPC
-// response byte slice that is suitable for transmission to a JSON-RPC client.
-//func MarshalResponse(id interface{}, result interface{}, rpcErr *RPCError) ([]byte, error) {
-//	marshalledResult, err := json.Marshal(result)
-//	if err != nil {
-//		return nil, err
-//	}
-//	response, err := NewResponse(id, marshalledResult, rpcErr)
-//	if err != nil {
-//		return nil, err
-//	}
-//	return json.Marshal(&response)
-//}
+	pid := &id
+	return &Response{
+		Result: marshalledResult,
+		Error:  rpcErr,
+		ID:     pid,
+	}, nil
+}
+
+func MarshalResponse(id interface{}, result interface{}, rpcErr *RPCError) ([]byte, error) {
+	marshalledResult, err := json.Marshal(result)
+	if err != nil {
+		return nil, err
+	}
+	response, err := NewResponse(id, marshalledResult, rpcErr)
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(&response)
+}
+
+func UpdateHandler(body *models.Jsonrpc) *models.Jsonrpc {
+	fmt.Println("UpdateHandler:", body)
+	ret := "updateResponse"
+	return &models.Jsonrpc{&ret}
+}
