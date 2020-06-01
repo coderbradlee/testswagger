@@ -34,7 +34,7 @@ type UpdateParams struct {
 	/*
 	  In: body
 	*/
-	Info *models.Jsonrpc
+	Body *models.Jsonrpc
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -50,7 +50,7 @@ func (o *UpdateParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 		defer r.Body.Close()
 		var body models.Jsonrpc
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
-			res = append(res, errors.NewParseError("info", "body", "", err))
+			res = append(res, errors.NewParseError("body", "body", "", err))
 		} else {
 			// validate body object
 			if err := body.Validate(route.Formats); err != nil {
@@ -58,7 +58,7 @@ func (o *UpdateParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 			}
 
 			if len(res) == 0 {
-				o.Info = &body
+				o.Body = &body
 			}
 		}
 	}

@@ -31,7 +31,7 @@ func NewGet(ctx *middleware.Context, handler GetHandler) *Get {
 
 /*Get swagger:route GET /did get get
 
-include getHash getURI
+include method getHash getURI
 
 */
 type Get struct {

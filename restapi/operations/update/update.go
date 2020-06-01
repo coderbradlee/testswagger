@@ -31,7 +31,7 @@ func NewUpdate(ctx *middleware.Context, handler UpdateHandler) *Update {
 
 /*Update swagger:route POST /did update update
 
-include createDID deleteDID updateHash updateURI
+include method createDID deleteDID updateHash updateURI
 
 */
 type Update struct {

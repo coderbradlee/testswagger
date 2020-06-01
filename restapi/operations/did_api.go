@@ -187,7 +187,6 @@ func (o *DidAPI) Authorizer() runtime.Authorizer {
 func (o *DidAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
-		fmt.Println(mt)
 		switch mt {
 		case "application/json":
 			result["application/json"] = o.JSONConsumer

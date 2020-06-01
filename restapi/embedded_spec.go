@@ -18,6 +18,15 @@ var (
 
 func init() {
 	SwaggerJSON = json.RawMessage([]byte(`{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
   "swagger": "2.0",
   "info": {
     "title": "Did",
@@ -29,11 +38,11 @@ func init() {
         "tags": [
           "get"
         ],
-        "summary": "include getHash getURI",
+        "summary": "include method getHash getURI",
         "operationId": "get",
         "parameters": [
           {
-            "name": "info",
+            "name": "body",
             "in": "body",
             "schema": {
               "$ref": "#/definitions/jsonrpc"
@@ -54,11 +63,11 @@ func init() {
         "tags": [
           "update"
         ],
-        "summary": "include createDID deleteDID updateHash updateURI",
+        "summary": "include method createDID deleteDID updateHash updateURI",
         "operationId": "update",
         "parameters": [
           {
-            "name": "info",
+            "name": "body",
             "in": "body",
             "schema": {
               "$ref": "#/definitions/jsonrpc"
@@ -93,6 +102,15 @@ func init() {
   }
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
   "swagger": "2.0",
   "info": {
     "title": "Did",
@@ -104,11 +122,11 @@ func init() {
         "tags": [
           "get"
         ],
-        "summary": "include getHash getURI",
+        "summary": "include method getHash getURI",
         "operationId": "get",
         "parameters": [
           {
-            "name": "info",
+            "name": "body",
             "in": "body",
             "schema": {
               "$ref": "#/definitions/jsonrpc"
@@ -129,11 +147,11 @@ func init() {
         "tags": [
           "update"
         ],
-        "summary": "include createDID deleteDID updateHash updateURI",
+        "summary": "include method createDID deleteDID updateHash updateURI",
         "operationId": "update",
         "parameters": [
           {
-            "name": "info",
+            "name": "body",
             "in": "body",
             "schema": {
               "$ref": "#/definitions/jsonrpc"
