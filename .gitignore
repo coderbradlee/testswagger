@@ -37,5 +37,5 @@ bin/*
 coverage.txt
 lint.log
 .editorconfig
-
+./cmd/did-server/did-server
 go.sum
