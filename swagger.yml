@@ -9,18 +9,12 @@ paths:
       produces:
         - text/plain
       parameters:
-        - name: id
+        - in: body
+          name: body
+          description: Create object that needs to be added to the store
           required: true
-          type: string
-          in: query
-        - name: hash
-          required: true
-          type: string
-          in: query
-        - name: uri
-          required: true
-          type: string
-          in: query
+          schema:
+            $ref: '#/definitions/Create'
       operationId: create
       responses:
         200:
@@ -34,6 +28,18 @@ paths:
             $ref: "#/definitions/error"
 
 definitions:
+  Create:
+    type: object
+    properties:
+      - name: id
+        required: true
+        type: string
+      - name: hash
+        required: true
+        type: string
+      - name: uri
+        required: true
+        type: string
   error:
     type: object
     required:

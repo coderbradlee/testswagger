@@ -38,3 +38,4 @@ coverage.txt
 lint.log
 .editorconfig
 
+go.sum
