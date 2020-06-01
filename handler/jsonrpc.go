@@ -134,24 +134,24 @@ func MarshalResponse(id interface{}, result interface{}, rpcErr *RPCError) ([]by
 	return json.Marshal(&response)
 }
 
-func UpdateHandler(params update.UpdateParams) []byte {
+func UpdateHandler(params update.UpdateParams) *Response {
 	fmt.Println("UpdateHandler:", *params.Body)
-	var ret []byte
+	var ret *Response
 	switch *params.Body.Method {
 	case "createDID":
-		result := "createDID"
-		ret, _ = MarshalResponse(*params.Body.ID, &result, nil)
+		result := []byte("createDID")
+		ret, _ = NewResponse(*params.Body.ID, result, nil)
 	case "deleteDID":
-		result := "deleteDID"
-		ret, _ = MarshalResponse(*params.Body.ID, &result, nil)
+		result := []byte("deleteDID")
+		ret, _ = NewResponse(*params.Body.ID, result, nil)
 	case "updateHash":
-		result := "updateHash"
-		ret, _ = MarshalResponse(*params.Body.ID, &result, nil)
+		result := []byte("updateHash")
+		ret, _ = NewResponse(*params.Body.ID, result, nil)
 	case "updateURI":
-		result := "updateURI"
-		ret, _ = MarshalResponse(*params.Body.ID, &result, nil)
+		result := []byte("updateURI")
+		ret, _ = NewResponse(*params.Body.ID, result, nil)
 	default:
-		ret, _ = MarshalResponse(nil, nil, &RPCError{ErrInvalidMethod, "request invalid method"})
+		ret, _ = NewResponse(nil, nil, &RPCError{ErrInvalidMethod, "request invalid method"})
 	}
 	return ret
 }
