@@ -45,7 +45,7 @@ func init() {
             "name": "body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/jsonrpc"
+              "$ref": "#/definitions/json"
             }
           }
         ],
@@ -70,7 +70,7 @@ func init() {
             "name": "body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/jsonrpc"
+              "$ref": "#/definitions/json"
             }
           }
         ],
@@ -87,15 +87,32 @@ func init() {
     }
   },
   "definitions": {
-    "jsonrpc": {
+    "json": {
       "type": "object",
       "required": [
-        "jsonbody"
+        "jsonrpc",
+        "id",
+        "method"
       ],
       "properties": {
-        "jsonbody": {
+        "id": {
           "type": "string",
           "format": "string"
+        },
+        "jsonrpc": {
+          "type": "string",
+          "format": "string"
+        },
+        "method": {
+          "type": "string",
+          "format": "string"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "string"
+          }
         }
       }
     }
@@ -129,7 +146,7 @@ func init() {
             "name": "body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/jsonrpc"
+              "$ref": "#/definitions/json"
             }
           }
         ],
@@ -154,7 +171,7 @@ func init() {
             "name": "body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/jsonrpc"
+              "$ref": "#/definitions/json"
             }
           }
         ],
@@ -171,15 +188,32 @@ func init() {
     }
   },
   "definitions": {
-    "jsonrpc": {
+    "json": {
       "type": "object",
       "required": [
-        "jsonbody"
+        "jsonrpc",
+        "id",
+        "method"
       ],
       "properties": {
-        "jsonbody": {
+        "id": {
           "type": "string",
           "format": "string"
+        },
+        "jsonrpc": {
+          "type": "string",
+          "format": "string"
+        },
+        "method": {
+          "type": "string",
+          "format": "string"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "string"
+          }
         }
       }
     }
