@@ -9,7 +9,7 @@ import (
 type UpdateResponse struct {
 
 	// In: body
-	Payload []byte `json:"response,omitempty"`
+	Payload *Response `json:"response,omitempty"`
 }
 
 // Handler to the client
