@@ -14,10 +14,10 @@ paths:
           type: string
           in: query
           description: defaults to empty if not given
-      operationId: getGreeting
+      operationId: getDid
       responses:
         200:
-          description: returns a greeting
+          description: returns a did
           schema:
               type: string
               description: contains the actual greeting as plain text
