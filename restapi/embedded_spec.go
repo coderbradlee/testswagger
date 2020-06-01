@@ -47,12 +47,6 @@ func init() {
               "description": "did create hash",
               "type": "string"
             }
-          },
-          "default": {
-            "description": "error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
           }
         }
       }
@@ -81,27 +75,6 @@ func init() {
           "format": "string"
         }
       }
-    },
-    "error": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "fields": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "principal": {
-      "type": "string"
     }
   }
 }`))
@@ -135,12 +108,6 @@ func init() {
               "description": "did create hash",
               "type": "string"
             }
-          },
-          "default": {
-            "description": "error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
           }
         }
       }
@@ -169,27 +136,6 @@ func init() {
           "format": "string"
         }
       }
-    },
-    "error": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "fields": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "principal": {
-      "type": "string"
     }
   }
 }`))

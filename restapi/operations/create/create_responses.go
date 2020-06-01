@@ -9,8 +9,6 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime"
-
-	"github.com/lzxm160/testswagger/models"
 )
 
 // CreateOKCode is the HTTP code returned for type CreateOK
@@ -52,63 +50,5 @@ func (o *CreateOK) WriteResponse(rw http.ResponseWriter, producer runtime.Produc
 	payload := o.Payload
 	if err := producer.Produce(rw, payload); err != nil {
 		panic(err) // let the recovery middleware deal with this
-	}
-}
-
-/*CreateDefault error
-
-swagger:response createDefault
-*/
-type CreateDefault struct {
-	_statusCode int
-
-	/*
-	  In: Body
-	*/
-	Payload *models.Error `json:"body,omitempty"`
-}
-
-// NewCreateDefault creates CreateDefault with default headers values
-func NewCreateDefault(code int) *CreateDefault {
-	if code <= 0 {
-		code = 500
-	}
-
-	return &CreateDefault{
-		_statusCode: code,
-	}
-}
-
-// WithStatusCode adds the status to the create default response
-func (o *CreateDefault) WithStatusCode(code int) *CreateDefault {
-	o._statusCode = code
-	return o
-}
-
-// SetStatusCode sets the status to the create default response
-func (o *CreateDefault) SetStatusCode(code int) {
-	o._statusCode = code
-}
-
-// WithPayload adds the payload to the create default response
-func (o *CreateDefault) WithPayload(payload *models.Error) *CreateDefault {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the create default response
-func (o *CreateDefault) SetPayload(payload *models.Error) {
-	o.Payload = payload
-}
-
-// WriteResponse to the client
-func (o *CreateDefault) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.WriteHeader(o._statusCode)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
 	}
 }
