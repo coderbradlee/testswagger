@@ -20,10 +20,6 @@ paths:
           schema:
               type: string
               description: did create hash
-        default:
-          description: error
-          schema:
-            $ref: "#/definitions/error"
 
 definitions:
   Create:
