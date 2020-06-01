@@ -30,16 +30,21 @@ paths:
 definitions:
   Create:
     type: object
+      required:
+        - id
+        - hash
+        - uri
     properties:
-      - name: id
-        required: true
+      id:
         type: string
-      - name: hash
-        required: true
+        format: string
+      hash:
         type: string
-      - name: uri
-        required: true
+        format: string
+        minLength: 64
+      uri:
         type: string
+        format: string
   error:
     type: object
     required:
