@@ -44,7 +44,7 @@ func configureAPI(api *operations.DidAPI) http.Handler {
 	}
 	if api.UpdateUpdateHandler == nil {
 		api.UpdateUpdateHandler = update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
-			ret := handler.UpdateHandler(params.Info)
+			ret := handler.UpdateHandler(params)
 			return handler.UpdateResponse{ret}
 		})
 	}

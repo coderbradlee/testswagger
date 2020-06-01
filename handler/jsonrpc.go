@@ -8,33 +8,39 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/lzxm160/testswagger/restapi/operations/update"
+
 	"github.com/lzxm160/testswagger/models"
 )
 
-// RPCErrorCode represents an error code to be used as a part of an RPCError
-// which is in turn used in a JSON-RPC Response object.
-//
-// A specific type is used to help ensure the wrong errors aren't used.
 type RPCErrorCode int
 
-// RPCError represents an error that is used as a part of a JSON-RPC Response
-// object.
+const (
+	ErrDuplicateMethod RPCErrorCode = iota
+	ErrInvalidMethod
+	ErrInvalidType
+	ErrEmbeddedType
+	ErrUnexportedField
+	ErrUnsupportedFieldType
+	ErrNonOptionalField
+	ErrNonOptionalDefault
+	ErrMismatchedDefault
+	ErrUnregisteredMethod
+	ErrUnmarshal
+	ErrNumParams
+)
+
 type RPCError struct {
 	Code    RPCErrorCode `json:"code,omitempty"`
 	Message string       `json:"message,omitempty"`
 }
 
-// Guarantee RPCError satisifies the builtin error interface.
 var _, _ error = RPCError{}, (*RPCError)(nil)
 
-// Error returns a string describing the RPC error.  This satisifies the
-// builtin error interface.
 func (e RPCError) Error() string {
 	return fmt.Sprintf("%d: %s", e.Code, e.Message)
 }
 
-// NewRPCError constructs and returns a new JSON-RPC error that is suitable
-// for use in a JSON-RPC Response object.
 func NewRPCError(code RPCErrorCode, message string) *RPCError {
 	return &RPCError{
 		Code:    code,
@@ -42,13 +48,6 @@ func NewRPCError(code RPCErrorCode, message string) *RPCError {
 	}
 }
 
-// IsValidIDType checks that the ID field (which can go in any of the JSON-RPC
-// requests, responses, or notifications) is valid.  JSON-RPC 1.0 allows any
-// valid JSON type.  JSON-RPC 2.0 (which bitcoind follows for some parts) only
-// allows string, number, or null, so this function restricts the allowed types
-// to that list.  This function is only provided in case the caller is manually
-// marshalling for some reason.    The functions which accept an ID in this
-// package already call this function to ensure the provided id is valid.
 func IsValidIDType(id interface{}) bool {
 	switch id.(type) {
 	case int, int8, int16, int32, int64,
@@ -62,12 +61,6 @@ func IsValidIDType(id interface{}) bool {
 	}
 }
 
-// Request is a type for raw JSON-RPC 1.0 requests.  The Method field identifies
-// the specific command type which in turns leads to different parameters.
-// Callers typically will not use this directly since this package provides a
-// statically typed command infrastructure which handles creation of these
-// requests, however this struct it being exported in case the caller wants to
-// construct raw requests for some reason.
 type Request struct {
 	Jsonrpc string            `json:"jsonrpc"`
 	Method  string            `json:"method"`
@@ -120,7 +113,7 @@ type Response struct {
 func NewResponse(id interface{}, marshalledResult []byte, rpcErr *RPCError) (*Response, error) {
 	if !IsValidIDType(id) {
 		str := fmt.Sprintf("the id of type '%T' is invalid", id)
-		return nil, makeError(ErrInvalidType, str)
+		return nil, RPCError{ErrInvalidType, str}
 	}
 
 	pid := &id
@@ -143,8 +136,31 @@ func MarshalResponse(id interface{}, result interface{}, rpcErr *RPCError) ([]by
 	return json.Marshal(&response)
 }
 
-func UpdateHandler(body *models.Jsonrpc) *models.Jsonrpc {
-	fmt.Println("UpdateHandler:", body)
-	ret := "updateResponse"
-	return &models.Jsonrpc{&ret}
+func UpdateHandler(params update.UpdateParams) *models.Jsonrpc {
+	fmt.Println("UpdateHandler:", params.Info.Jsonbody)
+	var req Request
+	err := json.Unmarshal([]byte(*params.Info.Jsonbody), &req)
+	var ret []byte
+	if err != nil {
+		ret, _ = MarshalResponse(nil, nil, &RPCError{ErrUnmarshal, "request unmarshal error"})
+
+	}
+	switch req.Method {
+	case "createDID":
+		result := "createDID"
+		ret, _ = MarshalResponse(req.ID, &result, nil)
+	case "deleteDID":
+		result := "deleteDID"
+		ret, _ = MarshalResponse(req.ID, &result, nil)
+	case "updateHash":
+		result := "updateHash"
+		ret, _ = MarshalResponse(req.ID, &result, nil)
+	case "updateURI":
+		result := "updateURI"
+		ret, _ = MarshalResponse(req.ID, &result, nil)
+	default:
+		ret, _ = MarshalResponse(nil, nil, &RPCError{ErrInvalidMethod, "request invalid method"})
+	}
+	res := string(ret)
+	return &models.Jsonrpc{&res}
 }
