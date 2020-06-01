@@ -20,7 +20,7 @@ func init() {
 	SwaggerJSON = json.RawMessage([]byte(`{
   "swagger": "2.0",
   "info": {
-    "title": "Did restful Server",
+    "title": "Did",
     "version": "1.0.0"
   },
   "paths": {
@@ -54,7 +54,7 @@ func init() {
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
   "swagger": "2.0",
   "info": {
-    "title": "Did restful Server",
+    "title": "Did",
     "version": "1.0.0"
   },
   "paths": {

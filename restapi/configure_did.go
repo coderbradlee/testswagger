@@ -10,16 +10,16 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	"github.com/lzxm160/testswagger/testswagger/restapi/operations"
+	"github.com/lzxm160/testswagger/restapi/operations"
 )
 
-//go:generate swagger generate server --target ../../testswagger --name DidRestfulServer --spec ../swagger.yml
+//go:generate swagger generate server --target ../../testswagger --name Did --spec ../swagger.yml
 
-func configureFlags(api *operations.DidRestfulServerAPI) {
+func configureFlags(api *operations.DidAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *operations.DidRestfulServerAPI) http.Handler {
+func configureAPI(api *operations.DidAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
 

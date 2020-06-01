@@ -20,9 +20,9 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewDidRestfulServerAPI creates a new DidRestfulServer instance
-func NewDidRestfulServerAPI(spec *loads.Document) *DidRestfulServerAPI {
-	return &DidRestfulServerAPI{
+// NewDidAPI creates a new Did instance
+func NewDidAPI(spec *loads.Document) *DidAPI {
+	return &DidAPI{
 		handlers:            make(map[string]map[string]http.Handler),
 		formats:             strfmt.Default,
 		defaultConsumes:     "application/json",
@@ -47,8 +47,8 @@ func NewDidRestfulServerAPI(spec *loads.Document) *DidRestfulServerAPI {
 	}
 }
 
-/*DidRestfulServerAPI the did restful server API */
-type DidRestfulServerAPI struct {
+/*DidAPI the did API */
+type DidAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
 	handlers        map[string]map[string]http.Handler
@@ -99,42 +99,42 @@ type DidRestfulServerAPI struct {
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *DidRestfulServerAPI) SetDefaultProduces(mediaType string) {
+func (o *DidAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *DidRestfulServerAPI) SetDefaultConsumes(mediaType string) {
+func (o *DidAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
-func (o *DidRestfulServerAPI) SetSpec(spec *loads.Document) {
+func (o *DidAPI) SetSpec(spec *loads.Document) {
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
-func (o *DidRestfulServerAPI) DefaultProduces() string {
+func (o *DidAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *DidRestfulServerAPI) DefaultConsumes() string {
+func (o *DidAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *DidRestfulServerAPI) Formats() strfmt.Registry {
+func (o *DidAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *DidRestfulServerAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *DidAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the DidRestfulServerAPI
-func (o *DidRestfulServerAPI) Validate() error {
+// Validate validates the registrations in the DidAPI
+func (o *DidAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -157,23 +157,23 @@ func (o *DidRestfulServerAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *DidRestfulServerAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *DidAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *DidRestfulServerAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+func (o *DidAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 	return nil
 }
 
 // Authorizer returns the registered authorizer
-func (o *DidRestfulServerAPI) Authorizer() runtime.Authorizer {
+func (o *DidAPI) Authorizer() runtime.Authorizer {
 	return nil
 }
 
 // ConsumersFor gets the consumers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *DidRestfulServerAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+func (o *DidAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -190,7 +190,7 @@ func (o *DidRestfulServerAPI) ConsumersFor(mediaTypes []string) map[string]runti
 
 // ProducersFor gets the producers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *DidRestfulServerAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+func (o *DidAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -206,7 +206,7 @@ func (o *DidRestfulServerAPI) ProducersFor(mediaTypes []string) map[string]runti
 }
 
 // HandlerFor gets a http.Handler for the provided operation method and path
-func (o *DidRestfulServerAPI) HandlerFor(method, path string) (http.Handler, bool) {
+func (o *DidAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -221,8 +221,8 @@ func (o *DidRestfulServerAPI) HandlerFor(method, path string) (http.Handler, boo
 	return h, ok
 }
 
-// Context returns the middleware context for the did restful server API
-func (o *DidRestfulServerAPI) Context() *middleware.Context {
+// Context returns the middleware context for the did API
+func (o *DidAPI) Context() *middleware.Context {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -230,7 +230,7 @@ func (o *DidRestfulServerAPI) Context() *middleware.Context {
 	return o.context
 }
 
-func (o *DidRestfulServerAPI) initHandlerCache() {
+func (o *DidAPI) initHandlerCache() {
 	o.Context() // don't care about the result, just that the initialization happened
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
@@ -244,7 +244,7 @@ func (o *DidRestfulServerAPI) initHandlerCache() {
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *DidRestfulServerAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *DidAPI) Serve(builder middleware.Builder) http.Handler {
 	o.Init()
 
 	if o.Middleware != nil {
@@ -254,24 +254,24 @@ func (o *DidRestfulServerAPI) Serve(builder middleware.Builder) http.Handler {
 }
 
 // Init allows you to just initialize the handler cache, you can then recompose the middleware as you see fit
-func (o *DidRestfulServerAPI) Init() {
+func (o *DidAPI) Init() {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}
 }
 
 // RegisterConsumer allows you to add (or override) a consumer for a media type.
-func (o *DidRestfulServerAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
+func (o *DidAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
 	o.customConsumers[mediaType] = consumer
 }
 
 // RegisterProducer allows you to add (or override) a producer for a media type.
-func (o *DidRestfulServerAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
+func (o *DidAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
 	o.customProducers[mediaType] = producer
 }
 
 // AddMiddlewareFor adds a http middleware to existing handler
-func (o *DidRestfulServerAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
+func (o *DidAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
 	um := strings.ToUpper(method)
 	if path == "/" {
 		path = ""
