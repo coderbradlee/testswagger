@@ -3,14 +3,20 @@ swagger: '2.0'
 info:
   version: 1.0.0
   title: Did
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
 paths:
   /did:
     post:
       tags: ["update"]
       operationId: update
-      summary: include createDID deleteDID updateHash updateURI
+      summary: include method createDID deleteDID updateHash updateURI
       parameters:
-        - name: info
+        - name: body
           in: body
           schema:
             $ref: "#/definitions/jsonrpc"
@@ -23,9 +29,9 @@ paths:
     get:
       tags: ["get"]
       operationId: get
-      summary: include getHash getURI
+      summary: include method getHash getURI
       parameters:
-        - name: info
+        - name: body
           in: body
           schema:
             $ref: "#/definitions/jsonrpc"
