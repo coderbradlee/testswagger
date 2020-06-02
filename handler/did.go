@@ -35,13 +35,13 @@ type DID interface {
 }
 
 type did struct {
-	cli      iotex.AuthedClient
-	readOnlyCli      iotex.ReadOnlyClient
-	account  account.Account
-	contract address.Address
-	abi      abi.ABI
-	gasPrice *big.Int
-	gasLimit uint64
+	cli         iotex.AuthedClient
+	readOnlyCli iotex.ReadOnlyClient
+	account     account.Account
+	contract    address.Address
+	abi         abi.ABI
+	gasPrice    *big.Int
+	gasLimit    uint64
 }
 
 func NewDID(endpoint, privateKey, contract, abiString string, gasPrice *big.Int, gasLimit uint64) (d DID, err error) {
@@ -62,7 +62,7 @@ func NewDID(endpoint, privateKey, contract, abiString string, gasPrice *big.Int,
 	if err != nil {
 		return
 	}
-	d = &did{iotex.NewAuthedClient(c, account), iotex.NewReadOnlyClient(c),account, addr, abi, gasPrice, gasLimit}
+	d = &did{iotex.NewAuthedClient(c, account), iotex.NewReadOnlyClient(c), account, addr, abi, gasPrice, gasLimit}
 	return
 }
 
@@ -116,7 +116,13 @@ func (d *did) UpdateUri(did, uri string) (hash string, err error) {
 
 func (d *did) GetHash(did string) (hash string, err error) {
 	fmt.Println("GetHash")
-	ret, err := d.readOnlyCli.ReadOnlyContract(d.contract, d.abi).Read(getHash, did).Call(context.Background())
+	conn, err := iotex.NewDefaultGRPCConn("api.testnet.iotex.one:443")
+	if err != nil {
+		return
+	}
+	defer conn.Close()
+	cli:=iotex.NewReadOnlyClient(iotexapi.NewAPIServiceClient(conn))
+	ret, err := cli.ReadOnlyContract(d.contract, d.abi).Read(getHash, did).Call(context.Background())
 	if err != nil {
 		return
 	}
