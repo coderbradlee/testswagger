@@ -62,9 +62,9 @@ func IsValidIDType(id interface{}) bool {
 
 type Request struct {
 	Jsonrpc string            `json:"jsonrpc"`
+	ID      interface{}       `json:"id"`
 	Method  string            `json:"method"`
 	Params  []json.RawMessage `json:"params"`
-	ID      interface{}       `json:"id"`
 }
 
 type Response struct {
