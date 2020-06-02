@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"os"
 
 	"github.com/lzxm160/testswagger/contract"
 
@@ -15,16 +16,22 @@ import (
 )
 
 const (
-	sender                = "io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02"
 	privateKey            = "414efa99dfac6f4095d6954713fb0085268d400d6a05a8ae8a69b5b1c10b4bed"
-	endpoint              = "api.testnet.iotex.one:443"
-	IoTeXDID_address      = "io1eurq3lx4lzx9wdj56plw5rm59f5qzanacr3raz"
+	Chainpoint            = "api.testnet.iotex.one:443"
 	IoTeXDIDProxy_address = "io1zgs5gqjl679qlj4gqqpa9t329r8f5gr8xc9lr0"
 )
 
 func UpdateHandler(params update.UpdateParams) *Response {
 	fmt.Println("UpdateHandler:", *params.Body)
-	d, err := NewDID(endpoint, privateKey, IoTeXDIDProxy_address, contract.IoTeXDIDProxyABI, big.NewInt(int64(unit.Qev)), uint64(1000000))
+	chainpoint := os.Getenv("CHAINPOINT")
+	if chainpoint == "" {
+		chainpoint = Chainpoint
+	}
+	DIDAddress := os.Getenv("IoTeXDIDPROXYADDRESS")
+	if DIDAddress == "" {
+		DIDAddress = IoTeXDIDProxy_address
+	}
+	d, err := NewDID(chainpoint, privateKey, DIDAddress, contract.IoTeXDIDProxyABI, big.NewInt(int64(unit.Qev)), uint64(1000000))
 	if err != nil {
 		ret, _ := NewResponse(nil, nil, ErrRPCInvalidParams)
 		return ret
@@ -73,11 +80,19 @@ func UpdateHandler(params update.UpdateParams) *Response {
 
 func GetHandler(params get.GetParams) *Response {
 	fmt.Println("GetHandler:", *params.Body)
+	chainpoint := os.Getenv("CHAINPOINT")
+	if chainpoint == "" {
+		chainpoint = Chainpoint
+	}
+	DIDAddress := os.Getenv("IoTeXDIDPROXYADDRESS")
+	if DIDAddress == "" {
+		DIDAddress = IoTeXDIDProxy_address
+	}
 	if len(params.Body.Params) != 1 {
 		ret, _ := NewResponse(nil, nil, ErrRPCInvalidParams)
 		return ret
 	}
-	d, err := NewDID(endpoint, privateKey, IoTeXDIDProxy_address, contract.IoTeXDIDProxyABI, big.NewInt(int64(unit.Qev)), uint64(1000000))
+	d, err := NewDID(chainpoint, privateKey, DIDAddress, contract.IoTeXDIDProxyABI, big.NewInt(int64(unit.Qev)), uint64(1000000))
 	if err != nil {
 		ret, _ := NewResponse(nil, nil, ErrRPCInvalidParams)
 		return ret
