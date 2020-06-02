@@ -8,10 +8,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/lzxm160/testswagger/contract"
-
-	"github.com/iotexproject/iotex-antenna-go/v2/utils/unit"
-
+	"github.com/lzxm160/testswagger/contract/IoTeXDID"
 	"github.com/lzxm160/testswagger/restapi/operations/get"
 	"github.com/lzxm160/testswagger/restapi/operations/update"
 )
@@ -62,7 +59,7 @@ func init() {
 func UpdateHandler(params update.UpdateParams) *Response {
 	fmt.Println("UpdateHandler:", *params.Body)
 	fmt.Println(chainpoint, DIDAddress, gasPrice, gasLimit)
-	d, err := NewDID(chainpoint, privateKey, DIDAddress, contract.IoTeXDIDProxyABI, big.NewInt(int64(unit.Qev)), uint64(1000000))
+	d, err := NewDID(chainpoint, privateKey, DIDAddress, IoTeXDID.IoTeXDIDABI, gasPrice, gasLimit)
 	if err != nil {
 		ret, _ := NewResponse(nil, nil, ErrRPCInvalidParams)
 		return ret
@@ -116,7 +113,7 @@ func GetHandler(params get.GetParams) *Response {
 		ret, _ := NewResponse(nil, nil, ErrRPCInvalidParams)
 		return ret
 	}
-	d, err := NewDID(chainpoint, privateKey, DIDAddress, contract.IoTeXDIDProxyABI, gasPrice, gasLimit)
+	d, err := NewDID(chainpoint, privateKey, DIDAddress, IoTeXDID.IoTeXDIDABI, gasPrice, gasLimit)
 	if err != nil {
 		ret, _ := NewResponse(nil, nil, ErrRPCInvalidParams)
 		return ret
