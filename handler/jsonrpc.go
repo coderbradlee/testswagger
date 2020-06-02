@@ -6,6 +6,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/lzxm160/testswagger/restapi/operations/update"
@@ -136,22 +137,33 @@ func MarshalResponse(id interface{}, result interface{}, rpcErr *RPCError) ([]by
 
 func UpdateHandler(params update.UpdateParams) *Response {
 	fmt.Println("UpdateHandler:", *params.Body)
-	var ret *Response
+	var (
+		result string
+		err    error
+	)
+
 	switch *params.Body.Method {
 	case "createDID":
-		result := []byte("createDID")
-		ret, _ = NewResponse(*params.Body.ID, result, nil)
+		result = "createDID"
 	case "deleteDID":
-		result := []byte("deleteDID")
-		ret, _ = NewResponse(*params.Body.ID, result, nil)
+		result = "deleteDID"
 	case "updateHash":
-		result := []byte("updateHash")
-		ret, _ = NewResponse(*params.Body.ID, result, nil)
+		result = "updateHash"
 	case "updateURI":
-		result := []byte("updateURI")
-		ret, _ = NewResponse(*params.Body.ID, result, nil)
+		result = "updateURI"
 	default:
-		ret, _ = NewResponse(nil, nil, &RPCError{ErrInvalidMethod, "request invalid method"})
+		err = errors.New("request invalid method")
 	}
+	if err != nil {
+		ret, _ := NewResponse(nil, nil, &RPCError{ErrInvalidMethod, err.Error()})
+		return ret
+	}
+
+	marshalledResult, err := json.Marshal(result)
+	if err != nil {
+		return nil
+	}
+	ret, _ := NewResponse(*params.Body.ID, marshalledResult, nil)
+
 	return ret
 }
