@@ -67,46 +67,10 @@ type Request struct {
 	ID      interface{}       `json:"id"`
 }
 
-// NewRequest returns a new JSON-RPC 1.0 request object given the provided id,
-// method, and parameters.  The parameters are marshalled into a json.RawMessage
-// for the Params field of the returned request object.  This function is only
-// provided in case the caller wants to construct raw requests for some reason.
-//
-// Typically callers will instead want to create a registered concrete command
-// type with the NewCmd or New<Foo>Cmd functions and call the MarshalCmd
-// function with that command to generate the marshalled JSON-RPC request.
-//func NewRequest(id interface{}, method string, params []interface{}) (*Request, error) {
-//	if !IsValidIDType(id) {
-//		str := fmt.Sprintf("the id of type '%T' is invalid", id)
-//		return nil, makeError(ErrInvalidType, str)
-//	}
-//
-//	rawParams := make([]json.RawMessage, 0, len(params))
-//	for _, param := range params {
-//		marshalledParam, err := json.Marshal(param)
-//		if err != nil {
-//			return nil, err
-//		}
-//		rawMessage := json.RawMessage(marshalledParam)
-//		rawParams = append(rawParams, rawMessage)
-//	}
-//
-//	return &Request{
-//		Jsonrpc: "1.0",
-//		ID:      id,
-//		Method:  method,
-//		Params:  rawParams,
-//	}, nil
-//}
-
-// Response is the general form of a JSON-RPC response.  The type of the Result
-// field varies from one command to the next, so it is implemented as an
-// interface.  The ID field has to be a pointer for Go to put a null in it when
-// empty.
 type Response struct {
+	ID     *interface{}    `json:"id"`
 	Result json.RawMessage `json:"result"`
 	Error  *RPCError       `json:"error"`
-	ID     *interface{}    `json:"id"`
 }
 
 func NewResponse(id interface{}, marshalledResult []byte, rpcErr *RPCError) (*Response, error) {
