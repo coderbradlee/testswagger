@@ -1,7 +1,5 @@
 ---
 swagger: '2.0'
-chainpoint: "api.testnet.iotex.one:443"
-contract: "io1zgs5gqjl679qlj4gqqpa9t329r8f5gr8xc9lr0"
 info:
   version: 1.0.0
   title: Did
