@@ -5,25 +5,9 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/lzxm160/testswagger/restapi/operations/get"
 	"github.com/lzxm160/testswagger/restapi/operations/update"
 )
-
-//type UpdateResponse struct {
-//
-//	// In: body
-//	Payload *Response `json:"response,omitempty"`
-//}
-//
-//// Handler to the client
-//func (o UpdateResponse) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-//
-//	rw.WriteHeader(200)
-//	if o.Payload != nil {
-//		if err := producer.Produce(rw, o.Payload); err != nil {
-//			panic(err) // let the recovery middleware deal with this
-//		}
-//	}
-//}
 
 func UpdateHandler(params update.UpdateParams) *Response {
 	fmt.Println("UpdateHandler:", *params.Body)
@@ -41,6 +25,34 @@ func UpdateHandler(params update.UpdateParams) *Response {
 		result = "updateHash"
 	case "updateURI":
 		result = "updateURI"
+	default:
+		err = errors.New("request invalid method")
+	}
+	if err != nil {
+		ret, _ := NewResponse(nil, nil, ErrRPCMethodNotFound)
+		return ret
+	}
+
+	marshalledResult, err := json.Marshal(result)
+	if err != nil {
+		return nil
+	}
+	ret, _ := NewResponse(*params.Body.ID, marshalledResult, nil)
+
+	return ret
+}
+func GetHandler(params get.GetParams) *Response {
+	fmt.Println("GetHandler:", *params.Body)
+	var (
+		result string
+		err    error
+	)
+
+	switch *params.Body.Method {
+	case "getHash":
+		result = "getHash"
+	case "getURI":
+		result = "getURI"
 	default:
 		err = errors.New("request invalid method")
 	}

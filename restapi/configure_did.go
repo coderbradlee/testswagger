@@ -4,7 +4,6 @@ package restapi
 
 import (
 	"crypto/tls"
-	"fmt"
 	"net/http"
 
 	"github.com/lzxm160/testswagger/handler"
@@ -38,19 +37,12 @@ func configureAPI(api *operations.DidAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	//if api.GetGetHandler == nil {
 	api.GetGetHandler = get.GetHandlerFunc(func(params get.GetParams) middleware.Responder {
-		return middleware.NotImplemented("operation get.Get has not yet been implemented")
+		return handler.GetHandler(params)
 	})
-	//}
-	fmt.Println("before nil", api.UpdateUpdateHandler)
-	//if api.UpdateUpdateHandler == nil {
 	api.UpdateUpdateHandler = update.UpdateHandlerFunc(func(params update.UpdateParams) middleware.Responder {
-		//ret := handler.UpdateHandler(params)
-		//return handler.UpdateResponse{ret}
 		return handler.UpdateHandler(params)
 	})
-	//}
 
 	api.PreServerShutdown = func() {}
 
