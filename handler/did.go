@@ -31,17 +31,15 @@ type DID interface {
 	UpdateUri(did, uri string) (hash string, err error)
 	GetHash(did string) (hash string, err error)
 	GetUri(did string) (uri string, err error)
-	GetCli() iotex.AuthedClient
 }
 
 type did struct {
-	cli         iotex.AuthedClient
-	readOnlyCli iotex.ReadOnlyClient
-	account     account.Account
-	contract    address.Address
-	abi         abi.ABI
-	gasPrice    *big.Int
-	gasLimit    uint64
+	endpoint string
+	account  account.Account
+	contract address.Address
+	abi      abi.ABI
+	gasPrice *big.Int
+	gasLimit uint64
 }
 
 func NewDID(endpoint, privateKey, contract, abiString string, gasPrice *big.Int, gasLimit uint64) (d DID, err error) {
@@ -49,11 +47,6 @@ func NewDID(endpoint, privateKey, contract, abiString string, gasPrice *big.Int,
 	if err != nil {
 		return
 	}
-	conn, err := iotex.NewDefaultGRPCConn(endpoint)
-	if err != nil {
-		return
-	}
-	c := iotexapi.NewAPIServiceClient(conn)
 	account, err := account.HexStringToAccount(privateKey)
 	if err != nil {
 		return
@@ -62,7 +55,7 @@ func NewDID(endpoint, privateKey, contract, abiString string, gasPrice *big.Int,
 	if err != nil {
 		return
 	}
-	d = &did{iotex.NewAuthedClient(c, account), iotex.NewReadOnlyClient(c), account, addr, abi, gasPrice, gasLimit}
+	d = &did{endpoint, account, addr, abi, gasPrice, gasLimit}
 	return
 }
 
@@ -71,11 +64,17 @@ func (d *did) CreateDID(id, didHash, url string) (hash string, err error) {
 		err = errors.New("hash should be 32 bytes")
 		return
 	}
+	conn, err := iotex.NewDefaultGRPCConn(d.endpoint)
+	if err != nil {
+		return
+	}
+	defer conn.Close()
+	cli := iotex.NewAuthedClient(iotexapi.NewAPIServiceClient(conn), d.account)
 	hashBytes, err := hex.DecodeString(didHash)
 	if err != nil {
 		return
 	}
-	h, err := d.cli.Contract(d.contract, d.abi).Execute(createDID, id, hashBytes, url).SetGasPrice(d.gasPrice).SetGasLimit(d.gasLimit).Call(context.Background())
+	h, err := cli.Contract(d.contract, d.abi).Execute(createDID, id, hashBytes, url).SetGasPrice(d.gasPrice).SetGasLimit(d.gasLimit).Call(context.Background())
 	if err != nil {
 		return
 	}
@@ -84,7 +83,13 @@ func (d *did) CreateDID(id, didHash, url string) (hash string, err error) {
 }
 
 func (d *did) DeleteDID(did string) (hash string, err error) {
-	h, err := d.cli.Contract(d.contract, d.abi).Execute(deleteDID, did).SetGasPrice(d.gasPrice).SetGasLimit(d.gasLimit).Call(context.Background())
+	conn, err := iotex.NewDefaultGRPCConn(d.endpoint)
+	if err != nil {
+		return
+	}
+	defer conn.Close()
+	cli := iotex.NewAuthedClient(iotexapi.NewAPIServiceClient(conn), d.account)
+	h, err := cli.Contract(d.contract, d.abi).Execute(deleteDID, did).SetGasPrice(d.gasPrice).SetGasLimit(d.gasLimit).Call(context.Background())
 	if err != nil {
 		return
 	}
@@ -93,11 +98,17 @@ func (d *did) DeleteDID(did string) (hash string, err error) {
 }
 
 func (d *did) UpdateHash(did, didHash string) (hash string, err error) {
+	conn, err := iotex.NewDefaultGRPCConn(d.endpoint)
+	if err != nil {
+		return
+	}
+	defer conn.Close()
+	cli := iotex.NewAuthedClient(iotexapi.NewAPIServiceClient(conn), d.account)
 	hashBytes, err := hex.DecodeString(didHash)
 	if err != nil {
 		return
 	}
-	h, err := d.cli.Contract(d.contract, d.abi).Execute(updateHash, did, hashBytes).SetGasPrice(d.gasPrice).SetGasLimit(d.gasLimit).Call(context.Background())
+	h, err := cli.Contract(d.contract, d.abi).Execute(updateHash, did, hashBytes).SetGasPrice(d.gasPrice).SetGasLimit(d.gasLimit).Call(context.Background())
 	if err != nil {
 		return
 	}
@@ -106,7 +117,13 @@ func (d *did) UpdateHash(did, didHash string) (hash string, err error) {
 }
 
 func (d *did) UpdateUri(did, uri string) (hash string, err error) {
-	h, err := d.cli.Contract(d.contract, d.abi).Execute(updateURI, did, uri).SetGasPrice(d.gasPrice).SetGasLimit(d.gasLimit).Call(context.Background())
+	conn, err := iotex.NewDefaultGRPCConn(d.endpoint)
+	if err != nil {
+		return
+	}
+	defer conn.Close()
+	cli := iotex.NewAuthedClient(iotexapi.NewAPIServiceClient(conn), d.account)
+	h, err := cli.Contract(d.contract, d.abi).Execute(updateURI, did, uri).SetGasPrice(d.gasPrice).SetGasLimit(d.gasLimit).Call(context.Background())
 	if err != nil {
 		return
 	}
@@ -116,12 +133,12 @@ func (d *did) UpdateUri(did, uri string) (hash string, err error) {
 
 func (d *did) GetHash(did string) (hash string, err error) {
 	fmt.Println("GetHash")
-	conn, err := iotex.NewDefaultGRPCConn("api.testnet.iotex.one:443")
+	conn, err := iotex.NewDefaultGRPCConn(d.endpoint)
 	if err != nil {
 		return
 	}
 	defer conn.Close()
-	cli:=iotex.NewReadOnlyClient(iotexapi.NewAPIServiceClient(conn))
+	cli := iotex.NewReadOnlyClient(iotexapi.NewAPIServiceClient(conn))
 	ret, err := cli.ReadOnlyContract(d.contract, d.abi).Read(getHash, did).Call(context.Background())
 	if err != nil {
 		return
@@ -136,7 +153,13 @@ func (d *did) GetHash(did string) (hash string, err error) {
 }
 
 func (d *did) GetUri(did string) (uri string, err error) {
-	ret, err := d.readOnlyCli.ReadOnlyContract(d.contract, d.abi).Read(getURI, did).Call(context.Background())
+	conn, err := iotex.NewDefaultGRPCConn(d.endpoint)
+	if err != nil {
+		return
+	}
+	defer conn.Close()
+	cli := iotex.NewReadOnlyClient(iotexapi.NewAPIServiceClient(conn))
+	ret, err := cli.ReadOnlyContract(d.contract, d.abi).Read(getURI, did).Call(context.Background())
 	if err != nil {
 		return
 	}
@@ -145,8 +168,4 @@ func (d *did) GetUri(did string) (uri string, err error) {
 		return
 	}
 	return
-}
-
-func (d *did) GetCli() iotex.AuthedClient {
-	return d.cli
 }
