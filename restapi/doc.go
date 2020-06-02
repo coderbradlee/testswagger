@@ -10,11 +10,9 @@
 //
 //  Consumes:
 //    - application/json
-//    - text/plain
 //
 //  Produces:
 //    - application/json
-//    - text/plain
 //
 // swagger:meta
 package restapi

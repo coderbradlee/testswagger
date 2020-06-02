@@ -41,10 +41,8 @@ func NewDidAPI(spec *loads.Document) *DidAPI {
 		BearerAuthenticator: security.BearerAuth,
 
 		JSONConsumer: runtime.JSONConsumer(),
-		TxtConsumer:  runtime.TextConsumer(),
 
 		JSONProducer: runtime.JSONProducer(),
-		TxtProducer:  runtime.TextProducer(),
 
 		GetGetHandler: get.GetHandlerFunc(func(params get.GetParams) middleware.Responder {
 			return middleware.NotImplemented("operation get.Get has not yet been implemented")
@@ -80,16 +78,10 @@ type DidAPI struct {
 	// JSONConsumer registers a consumer for the following mime types:
 	//   - application/json
 	JSONConsumer runtime.Consumer
-	// TxtConsumer registers a consumer for the following mime types:
-	//   - text/plain
-	TxtConsumer runtime.Consumer
 
 	// JSONProducer registers a producer for the following mime types:
 	//   - application/json
 	JSONProducer runtime.Producer
-	// TxtProducer registers a producer for the following mime types:
-	//   - text/plain
-	TxtProducer runtime.Producer
 
 	// GetGetHandler sets the operation handler for the get operation
 	GetGetHandler get.GetHandler
@@ -156,15 +148,9 @@ func (o *DidAPI) Validate() error {
 	if o.JSONConsumer == nil {
 		unregistered = append(unregistered, "JSONConsumer")
 	}
-	if o.TxtConsumer == nil {
-		unregistered = append(unregistered, "TxtConsumer")
-	}
 
 	if o.JSONProducer == nil {
 		unregistered = append(unregistered, "JSONProducer")
-	}
-	if o.TxtProducer == nil {
-		unregistered = append(unregistered, "TxtProducer")
 	}
 
 	if o.GetGetHandler == nil {
@@ -204,8 +190,6 @@ func (o *DidAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 		switch mt {
 		case "application/json":
 			result["application/json"] = o.JSONConsumer
-		case "text/plain":
-			result["text/plain"] = o.TxtConsumer
 		}
 
 		if c, ok := o.customConsumers[mt]; ok {
@@ -223,8 +207,6 @@ func (o *DidAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 		switch mt {
 		case "application/json":
 			result["application/json"] = o.JSONProducer
-		case "text/plain":
-			result["text/plain"] = o.TxtProducer
 		}
 
 		if p, ok := o.customProducers[mt]; ok {
