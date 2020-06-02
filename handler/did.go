@@ -36,6 +36,7 @@ type DID interface {
 
 type did struct {
 	cli      iotex.AuthedClient
+	readOnlyCli      iotex.ReadOnlyClient
 	account  account.Account
 	contract address.Address
 	abi      abi.ABI
@@ -61,7 +62,7 @@ func NewDID(endpoint, privateKey, contract, abiString string, gasPrice *big.Int,
 	if err != nil {
 		return
 	}
-	d = &did{iotex.NewAuthedClient(c, account), account, addr, abi, gasPrice, gasLimit}
+	d = &did{iotex.NewAuthedClient(c, account), iotex.NewReadOnlyClient(c),account, addr, abi, gasPrice, gasLimit}
 	return
 }
 
@@ -115,7 +116,7 @@ func (d *did) UpdateUri(did, uri string) (hash string, err error) {
 
 func (d *did) GetHash(did string) (hash string, err error) {
 	fmt.Println("GetHash")
-	ret, err := d.cli.ReadOnlyContract(d.contract, d.abi).Read(getHash, did).Call(context.Background())
+	ret, err := d.readOnlyCli.ReadOnlyContract(d.contract, d.abi).Read(getHash, did).Call(context.Background())
 	if err != nil {
 		return
 	}
@@ -129,7 +130,7 @@ func (d *did) GetHash(did string) (hash string, err error) {
 }
 
 func (d *did) GetUri(did string) (uri string, err error) {
-	ret, err := d.cli.ReadOnlyContract(d.contract, d.abi).Read(getURI, did).Call(context.Background())
+	ret, err := d.readOnlyCli.ReadOnlyContract(d.contract, d.abi).Read(getURI, did).Call(context.Background())
 	if err != nil {
 		return
 	}
