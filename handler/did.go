@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"math/big"
 	"strings"
 
@@ -113,6 +114,7 @@ func (d *did) UpdateUri(did, uri string) (hash string, err error) {
 }
 
 func (d *did) GetHash(did string) (hash string, err error) {
+	fmt.Println("GetHash")
 	ret, err := d.cli.ReadOnlyContract(d.contract, d.abi).Read(getHash, did).Call(context.Background())
 	if err != nil {
 		return

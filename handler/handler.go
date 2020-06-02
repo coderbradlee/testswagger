@@ -118,6 +118,7 @@ func GetHandler(params get.GetParams) *Response {
 		ret, _ := NewResponse(nil, nil, ErrRPCInvalidParams)
 		return ret
 	}
+	fmt.Println("121")
 	var result string
 	switch *params.Body.Method {
 	case getHash:
