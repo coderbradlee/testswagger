@@ -28,7 +28,7 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
-    "/identifiers/{identifier}": {
+    "/1.0/identifiers/{identifier}": {
       "get": {
         "summary": "Resolve a DID or other identifier.",
         "operationId": "resolve",
@@ -91,7 +91,7 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
-    "/identifiers/{identifier}": {
+    "/1.0/identifiers/{identifier}": {
       "get": {
         "summary": "Resolve a DID or other identifier.",
         "operationId": "resolve",

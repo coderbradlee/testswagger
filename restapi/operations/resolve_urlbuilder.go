@@ -40,7 +40,7 @@ func (o *ResolveURL) SetBasePath(bp string) {
 func (o *ResolveURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/identifiers/{identifier}"
+	var _path = "/1.0/identifiers/{identifier}"
 
 	identifier := o.Identifier
 	if identifier != "" {

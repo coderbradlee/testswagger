@@ -207,7 +207,6 @@ func (o *IoTexDriverAPI) ProducersFor(mediaTypes []string) map[string]runtime.Pr
 
 // HandlerFor gets a http.Handler for the provided operation method and path
 func (o *IoTexDriverAPI) HandlerFor(method, path string) (http.Handler, bool) {
-	fmt.Println(method,path)
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -240,7 +239,7 @@ func (o *IoTexDriverAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/identifiers/{identifier}"] = NewResolve(o.context, o.ResolveHandler)
+	o.handlers["GET"]["/1.0/identifiers/{identifier}"] = NewResolve(o.context, o.ResolveHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

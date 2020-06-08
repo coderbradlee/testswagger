@@ -6,7 +6,6 @@ package operations
 // Editing this file might prove futile when you re-run the generate command
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -30,7 +29,7 @@ func NewResolve(ctx *middleware.Context, handler ResolveHandler) *Resolve {
 	return &Resolve{Context: ctx, Handler: handler}
 }
 
-/*Resolve swagger:route GET /identifiers/{identifier} resolve
+/*Resolve swagger:route GET /1.0/identifiers/{identifier} resolve
 
 Resolve a DID or other identifier.
 
@@ -46,7 +45,7 @@ func (o *Resolve) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		r = rCtx
 	}
 	var Params = NewResolveParams()
-	fmt.Println(r.RequestURI,r.Method)
+
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params
 		o.Context.Respond(rw, r, route.Produces, route, err)
 		return
