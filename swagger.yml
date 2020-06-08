@@ -18,7 +18,6 @@ paths:
           schema:
             type: string
           description: A DID or other identifier to be resolved.
-          example: did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02
         - in: header
           required: false
           name: Accept
@@ -43,55 +42,10 @@ paths:
               schema:
                 type: object
                 description: The DID document (JSON representation).
-                example: {
-                  "id": "did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02",
-                  "publicKey": [{
-                                  "id": "did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02#keys-1",
-                                  "type": "RsaVerificationKey2018",
-                                  "controller": "did:io:0x56d0B5eD3D525332F00C9BC938f93598ab16AAA7",
-                                  "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n" }],
-                  "authentication": [{
-                                       "type": "RsaSignatureAuthentication2018",
-                                       "publicKey": "did:io:0x5576E95935366Ebd2637D9171E4C92e60598be10#keys-1" }],
-                  "service": [{
-                                "id": "did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02;exam_svc",
-                                "type": "ExampleService",
-                                "serviceEndpoint": "https://example.com/endpoint/8377464" }],
-                  "created": "2018-02-08T16:03:00Z",
-                  "proof": {
-                    "type": "LinkedDataSignature2015",
-                    "created": "2018-02-08T16:02:20Z",
-                    "creator": "did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02#keys-1",
-                    "signatureValue": "QNB13Y7Q9...1tzjn4w=="
-                  }
-                }
             application/did+ld+json:
               schema:
                 type: object
                 description: The DID document (JSON-LD representation).
-                example: {
-                  "@context": "https://w3id.org/did/v1",
-                  "id": "did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02",
-                  "publicKey": [{
-                                  "id": "did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02#keys-1",
-                                  "type": "RsaVerificationKey2018",
-                                  "controller": "did:io:0x56d0B5eD3D525332F00C9BC938f93598ab16AAA7",
-                                  "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n" }],
-                  "authentication": [{
-                                       "type": "RsaSignatureAuthentication2018",
-                                       "publicKey": "did:io:0x5576E95935366Ebd2637D9171E4C92e60598be10#keys-1" }],
-                  "service": [{
-                                "id": "did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02;exam_svc",
-                                "type": "ExampleService",
-                                "serviceEndpoint": "https://example.com/endpoint/8377464" }],
-                  "created": "2018-02-08T16:03:00Z",
-                  "proof": {
-                    "type": "LinkedDataSignature2015",
-                    "created": "2018-02-08T16:02:20Z",
-                    "creator": "did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02#keys-1",
-                    "signatureValue": "QNB13Y7Q9...1tzjn4w=="
-                  }
-                }
             application/ld+json;profile=\"https://w3c-ccg.github.io/did-resolution/\":
               schema:
                 $ref: '#/components/schemas/ResolutionResult'
@@ -108,17 +62,6 @@ components:
       properties:
         didDocument:
           type: object
-          example: {
-            "@context": "https://www.w3.org/2019/did/v1",
-            "id": "did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02",
-            "publicKey": [
-            {
-              "id": "did:io:io1ph0u2psnd7muq5xv9623rmxdsxc4uapxhzpg02#key-1",
-              "type": "Ed25519VerificationKey2018",
-              "publicKeyBase58": "H3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
-            }
-            ]
-          }
         resolverMetadata:
           type: object
         methodMetadata:
