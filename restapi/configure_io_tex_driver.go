@@ -4,6 +4,7 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
 	"github.com/lzxm160/testswagger/handler"
 	"net/http"
 
@@ -33,12 +34,12 @@ func configureAPI(api *operations.IoTexDriverAPI) http.Handler {
 	api.JSONConsumer = runtime.JSONConsumer()
 
 	api.JSONProducer = runtime.JSONProducer()
-
-	if api.ResolveHandler == nil {
+	fmt.Println("xxxxxxxxxxxx")
+	//if api.ResolveHandler == nil {
 		api.ResolveHandler = operations.ResolveHandlerFunc(func(params operations.ResolveParams) middleware.Responder {
 			return handler.GetHandler(params.Identifier)
 		})
-	}
+	//}
 
 	api.PreServerShutdown = func() {}
 
