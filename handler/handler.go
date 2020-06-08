@@ -15,6 +15,32 @@ const (
 	IoTeXDIDProxy_address = "io1zgs5gqjl679qlj4gqqpa9t329r8f5gr8xc9lr0"
 	GasPrice              = "1000000000000"
 	GasLimit              = "1000000"
+	testDID               = `{
+  "@context": "https://w3id.org/did/v1",
+  "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
+  "authentication": [
+    {
+      "type": "Secp256k1SignatureAuthentication2018",
+      "publicKey": [
+        "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#owner"
+      ]
+    }
+  ],
+  "publicKey": [
+    {
+      "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#owner",
+      "type": "Secp256k1VerificationKey2018",
+      "ethereumAddress": "0xe6fe788d8ca214a080b0f6ac7f48480b2aefa9a6",
+      "owner": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6"
+    },
+    {
+      "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#delegate-1",
+      "type": "Secp256k1VerificationKey2018",
+      "owner": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
+      "publicKeyHex": "0295dda1dca7f80e308ef60155ddeac00e46b797fd40ef407f422e88d2467a27eb"
+    }
+  ]
+}`
 )
 
 var (
@@ -63,6 +89,7 @@ func GetHandler(did string) *Response {
 	if err != nil {
 		return ret
 	}
+	fmt.Println(result)
 	//fmt.Println("121")
 	//var result string
 	//switch *params.Body.Method {
@@ -81,6 +108,6 @@ func GetHandler(did string) *Response {
 	//if err != nil {
 	//	return nil
 	//}
-	ret, _ = NewResponse(result)
+	ret, _ = NewResponse(testDID)
 	return ret
 }
