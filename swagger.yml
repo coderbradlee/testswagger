@@ -20,8 +20,8 @@ paths:
       responses:
         '200':
           schema:
-            title: TaskList
-              type: array
+            title: DID document
+              type: object
               items:
                 ref: '#/components/schemas/ResolutionResult'
         '400':
