@@ -6,6 +6,7 @@ package operations
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/go-openapi/errors"
@@ -42,7 +43,7 @@ type ResolveParams struct {
 // To ensure default values, the struct must have been initialized with NewResolveParams() beforehand.
 func (o *ResolveParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
-
+	fmt.Println(r.Method,r.RequestURI)
 	o.HTTPRequest = r
 
 	rIdentifier, rhkIdentifier, _ := route.Params.GetOK("identifier")
