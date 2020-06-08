@@ -59,7 +59,7 @@ func GetHandler(did string) *Response {
 		ret, _ := NewResponse(nil)
 		return ret
 	}
-	result, err = d.GetUri(did)
+	result, err := d.GetUri(did)
 	//fmt.Println("121")
 	//var result string
 	//switch *params.Body.Method {
@@ -78,6 +78,6 @@ func GetHandler(did string) *Response {
 	//if err != nil {
 	//	return nil
 	//}
-	ret, _ := NewResponse([]byte("test"))
+	ret, _ := NewResponse([]byte(result))
 	return ret
 }
