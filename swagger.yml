@@ -20,7 +20,10 @@ paths:
       responses:
         '200':
           schema:
-            ref: '#/components/schemas/ResolutionResult'
+            title: TaskList
+              type: array
+              items:
+                ref: '#/components/schemas/ResolutionResult'
         '400':
           description: invalid input!
         '500':
