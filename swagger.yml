@@ -18,10 +18,12 @@ paths:
           type: string
           description: A DID or other identifier to be resolved.
       responses:
-        200:
-          description: Successful response
+        '200':
+          description: OK
           schema:
-            ref: '#/components/schemas/ResolutionResult'
+            type: array
+            items:
+              $ref: "#/definitions/ResolutionResult"
         '400':
           description: invalid input!
         '500':
