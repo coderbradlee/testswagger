@@ -4,6 +4,7 @@ package restapi
 
 import (
 	"crypto/tls"
+	"github.com/lzxm160/testswagger/handler"
 	"net/http"
 
 	"github.com/go-openapi/errors"
@@ -35,7 +36,7 @@ func configureAPI(api *operations.IoTexDriverAPI) http.Handler {
 
 	if api.ResolveHandler == nil {
 		api.ResolveHandler = operations.ResolveHandlerFunc(func(params operations.ResolveParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.Resolve has not yet been implemented")
+			return handler.GetHandler(params.Identifier)
 		})
 	}
 
