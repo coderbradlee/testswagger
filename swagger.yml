@@ -19,6 +19,7 @@ paths:
           description: A DID or other identifier to be resolved.
       responses:
         '200':
+          description: Successful response
           schema:
             title: DID document
             type: object
