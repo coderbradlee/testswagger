@@ -21,9 +21,9 @@ paths:
         '200':
           schema:
             title: DID document
-              type: object
-              items:
-                ref: '#/components/schemas/ResolutionResult'
+            type: object
+            items:
+              ref: '#/components/schemas/ResolutionResult'
         '400':
           description: invalid input!
         '500':
