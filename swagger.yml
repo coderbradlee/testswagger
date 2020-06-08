@@ -21,10 +21,7 @@ paths:
         200:
           description: Successful response
           schema:
-            title: DID document
-            type: object
-            items:
-              ref: '#/components/schemas/ResolutionResult'
+            ref: '#/components/schemas/ResolutionResult'
         '400':
           description: invalid input!
         '500':
