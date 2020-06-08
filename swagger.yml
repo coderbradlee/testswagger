@@ -29,8 +29,7 @@ paths:
           description: invalid input!
         '500':
           description: error!
-components:
-  schemas:
+definitions:
     ResolutionResult:
       description: The DID resolution result.
       type: object
