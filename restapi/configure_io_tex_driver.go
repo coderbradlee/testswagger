@@ -4,9 +4,9 @@ package restapi
 
 import (
 	"crypto/tls"
-	"fmt"
-	"github.com/lzxm160/testswagger/handler"
 	"net/http"
+
+	"github.com/lzxm160/testswagger/handler"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -34,12 +34,9 @@ func configureAPI(api *operations.IoTexDriverAPI) http.Handler {
 	api.JSONConsumer = runtime.JSONConsumer()
 
 	api.JSONProducer = runtime.JSONProducer()
-	fmt.Println("xxxxxxxxxxxx")
-	//if api.ResolveHandler == nil {
-		api.ResolveHandler = operations.ResolveHandlerFunc(func(params operations.ResolveParams) middleware.Responder {
-			return handler.GetHandler(params.Identifier)
-		})
-	//}
+	api.ResolveHandler = operations.ResolveHandlerFunc(func(params operations.ResolveParams) middleware.Responder {
+		return handler.GetHandler(params.Identifier)
+	})
 
 	api.PreServerShutdown = func() {}
 

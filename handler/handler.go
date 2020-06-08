@@ -81,7 +81,6 @@ func GetHandler(id string) *Response {
 	//if err != nil {
 	//	return nil
 	//}
-	//ret, _ := NewResponse(*params.Body.ID, marshalledResult, nil)
-	//return ret
-	return nil
+	ret, _ := NewResponse([]byte("test"))
+	return ret
 }
