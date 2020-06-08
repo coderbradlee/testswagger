@@ -207,6 +207,7 @@ func (o *IoTexDriverAPI) ProducersFor(mediaTypes []string) map[string]runtime.Pr
 
 // HandlerFor gets a http.Handler for the provided operation method and path
 func (o *IoTexDriverAPI) HandlerFor(method, path string) (http.Handler, bool) {
+	fmt.Println(method,path)
 	if o.handlers == nil {
 		return nil, false
 	}
