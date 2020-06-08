@@ -18,204 +18,128 @@ var (
 
 func init() {
 	SwaggerJSON = json.RawMessage([]byte(`{
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "schemes": [
-    "http"
-  ],
   "swagger": "2.0",
   "info": {
-    "title": "Did",
+    "description": "IoTex Driver",
+    "title": "IoTex Driver",
+    "contact": {
+      "email": "xx@x.com"
+    },
     "version": "1.0.0"
   },
   "paths": {
-    "/did": {
+    "/identifiers/{identifier}": {
       "get": {
-        "tags": [
-          "get"
-        ],
-        "summary": "include method getHash getURI",
-        "operationId": "get",
+        "summary": "Resolve a DID or other identifier.",
+        "operationId": "resolve",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/json"
-            }
+            "type": "string",
+            "description": "A DID or other identifier to be resolved.",
+            "name": "identifier",
+            "in": "path",
+            "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "returns jsonrpc",
+            "description": "OK",
             "schema": {
-              "description": "standard jsonrpc",
-              "type": "string"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ResolutionResult"
+              }
             }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "update"
-        ],
-        "summary": "include method createDID deleteDID updateHash updateURI",
-        "operationId": "update",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/json"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returns a hash",
-            "schema": {
-              "description": "did create hash",
-              "type": "string"
-            }
+          },
+          "400": {
+            "description": "invalid input!"
+          },
+          "500": {
+            "description": "error!"
           }
         }
       }
     }
   },
   "definitions": {
-    "json": {
+    "ResolutionResult": {
+      "description": "The DID resolution result.",
       "type": "object",
-      "required": [
-        "jsonrpc",
-        "id",
-        "method"
-      ],
       "properties": {
-        "id": {
-          "type": "string",
-          "format": "string"
+        "didDocument": {
+          "type": "object"
         },
-        "jsonrpc": {
-          "type": "string",
-          "format": "string"
+        "methodMetadata": {
+          "type": "object"
         },
-        "method": {
-          "type": "string",
-          "format": "string"
-        },
-        "params": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "string"
-          }
+        "resolverMetadata": {
+          "type": "object"
         }
-      }
+      },
+      "additionalProperties": false
     }
   }
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "schemes": [
-    "http"
-  ],
   "swagger": "2.0",
   "info": {
-    "title": "Did",
+    "description": "IoTex Driver",
+    "title": "IoTex Driver",
+    "contact": {
+      "email": "xx@x.com"
+    },
     "version": "1.0.0"
   },
   "paths": {
-    "/did": {
+    "/identifiers/{identifier}": {
       "get": {
-        "tags": [
-          "get"
-        ],
-        "summary": "include method getHash getURI",
-        "operationId": "get",
+        "summary": "Resolve a DID or other identifier.",
+        "operationId": "resolve",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/json"
-            }
+            "type": "string",
+            "description": "A DID or other identifier to be resolved.",
+            "name": "identifier",
+            "in": "path",
+            "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "returns jsonrpc",
+            "description": "OK",
             "schema": {
-              "description": "standard jsonrpc",
-              "type": "string"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ResolutionResult"
+              }
             }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "update"
-        ],
-        "summary": "include method createDID deleteDID updateHash updateURI",
-        "operationId": "update",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/json"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returns a hash",
-            "schema": {
-              "description": "did create hash",
-              "type": "string"
-            }
+          },
+          "400": {
+            "description": "invalid input!"
+          },
+          "500": {
+            "description": "error!"
           }
         }
       }
     }
   },
   "definitions": {
-    "json": {
+    "ResolutionResult": {
+      "description": "The DID resolution result.",
       "type": "object",
-      "required": [
-        "jsonrpc",
-        "id",
-        "method"
-      ],
       "properties": {
-        "id": {
-          "type": "string",
-          "format": "string"
+        "didDocument": {
+          "type": "object"
         },
-        "jsonrpc": {
-          "type": "string",
-          "format": "string"
+        "methodMetadata": {
+          "type": "object"
         },
-        "method": {
-          "type": "string",
-          "format": "string"
-        },
-        "params": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "string"
-          }
+        "resolverMetadata": {
+          "type": "object"
         }
-      }
+      },
+      "additionalProperties": false
     }
   }
 }`))
