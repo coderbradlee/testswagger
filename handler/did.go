@@ -47,9 +47,9 @@ func NewDID(endpoint, privateKey, contract, abiString string, gasPrice *big.Int,
 	if err != nil {
 		return
 	}
-	var account account.Account
+	var acc account.Account
 	if privateKey != "" {
-		account, err = account.HexStringToAccount(privateKey)
+		acc, err = account.HexStringToAccount(privateKey)
 		if err != nil {
 			return
 		}
@@ -59,7 +59,7 @@ func NewDID(endpoint, privateKey, contract, abiString string, gasPrice *big.Int,
 	if err != nil {
 		return
 	}
-	d = &did{endpoint, account, addr, abi, gasPrice, gasLimit}
+	d = &did{endpoint, acc, addr, abi, gasPrice, gasLimit}
 	return
 }
 
