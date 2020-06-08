@@ -7,7 +7,7 @@ info:
   contact:
     email: xx@x.com
 paths:
-  /identifiers/{identifier}:
+  /1.0/identifiers/{identifier}:
     get:
       summary: Resolve a DID or other identifier.
       operationId: resolve

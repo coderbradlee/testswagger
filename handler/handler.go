@@ -5,6 +5,8 @@ import (
 	"math/big"
 	"os"
 	"strconv"
+
+	"github.com/lzxm160/testswagger/contract/IoTeXDID"
 )
 
 const (
@@ -51,18 +53,13 @@ func init() {
 	}
 }
 
-func GetHandler(id string) *Response {
-	//fmt.Println("GetHandler:", *params.Body)
-	fmt.Println(chainpoint, DIDAddress, gasPrice, gasLimit,id)
-	//if len(params.Body.Params) != 1 {
-	//	ret, _ := NewResponse(nil, nil, ErrRPCInvalidParams)
-	//	return ret
-	//}
-	//d, err := NewDID(chainpoint, privateKey, DIDAddress, IoTeXDID.IoTeXDIDABI, gasPrice, gasLimit)
-	//if err != nil {
-	//	ret, _ := NewResponse(nil, nil, ErrRPCInvalidParams)
-	//	return ret
-	//}
+func GetHandler(did string) *Response {
+	d, err := NewDID(chainpoint, privateKey, DIDAddress, IoTeXDID.IoTeXDIDABI, gasPrice, gasLimit)
+	if err != nil {
+		ret, _ := NewResponse(nil)
+		return ret
+	}
+	result, err = d.GetUri(did)
 	//fmt.Println("121")
 	//var result string
 	//switch *params.Body.Method {
