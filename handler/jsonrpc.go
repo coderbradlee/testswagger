@@ -10,12 +10,12 @@ import (
 )
 
 type Response struct {
-	DIDDocument     []byte    `json:"DIDDocument"`
+	DIDDocument string `json:"DIDDocument"`
 }
 
-func NewResponse( marshalledResult []byte) (*Response, error) {
+func NewResponse(marshalledResult string) (*Response, error) {
 	return &Response{
-		DIDDocument:marshalledResult,
+		DIDDocument: marshalledResult,
 	}, nil
 }
 

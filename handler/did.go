@@ -47,10 +47,14 @@ func NewDID(endpoint, privateKey, contract, abiString string, gasPrice *big.Int,
 	if err != nil {
 		return
 	}
-	account, err := account.HexStringToAccount(privateKey)
-	if err != nil {
-		return
+	var account account.Account
+	if privateKey != "" {
+		account, err = account.HexStringToAccount(privateKey)
+		if err != nil {
+			return
+		}
 	}
+
 	addr, err := address.FromString(contract)
 	if err != nil {
 		return

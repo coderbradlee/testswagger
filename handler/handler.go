@@ -54,12 +54,15 @@ func init() {
 }
 
 func GetHandler(did string) *Response {
-	d, err := NewDID(chainpoint, privateKey, DIDAddress, IoTeXDID.IoTeXDIDABI, gasPrice, gasLimit)
+	ret, _ := NewResponse("")
+	d, err := NewDID(chainpoint, "", DIDAddress, IoTeXDID.IoTeXDIDABI, gasPrice, gasLimit)
 	if err != nil {
-		ret, _ := NewResponse(nil)
 		return ret
 	}
 	result, err := d.GetUri(did)
+	if err != nil {
+		return ret
+	}
 	//fmt.Println("121")
 	//var result string
 	//switch *params.Body.Method {
@@ -78,6 +81,6 @@ func GetHandler(did string) *Response {
 	//if err != nil {
 	//	return nil
 	//}
-	ret, _ := NewResponse([]byte(result))
+	ret, _ = NewResponse(result)
 	return ret
 }
