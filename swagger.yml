@@ -19,19 +19,8 @@ paths:
           description: A DID or other identifier to be resolved.
       responses:
         '200':
-          description: successfully resolved!
-          content:
-            application/did+json:
-              schema:
-                type: object
-                description: The DID document (JSON representation).
-            application/did+ld+json:
-              schema:
-                type: object
-                description: The DID document (JSON-LD representation).
-            application/ld+json;profile=\"https://w3c-ccg.github.io/did-resolution/\":
-              schema:
-                $ref: '#/components/schemas/ResolutionResult'
+          schema:
+            ref: '#/components/schemas/ResolutionResult'
         '400':
           description: invalid input!
         '500':
